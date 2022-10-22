@@ -17,21 +17,20 @@ describe('List free rooms use case', () => {
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
   describe('Key scenarios', () => {
+    function bookedRoom(roomName: string): Booking {
+      return ({
+        roomName,
+        arrivalDate: ARRIVAL_DATE,
+        departureDate: DEPARTURE_DATE,
+        clientId: ANY_CLIENT_ID
+      });
+    }
+
     it('list only free rooms in the given period', async () => {
       // given
       const bookedRooms = [
-        {
-          roomName: ROOM_ONE_NAME,
-          arrivalDate: new Date(2020, 1, 1),
-          departureDate: ARRIVAL_DATE,
-          clientId: ANY_CLIENT_ID
-        },
-        {
-          roomName: ROOM_TWO_NAME,
-          arrivalDate: ARRIVAL_DATE,
-          departureDate: DEPARTURE_DATE,
-          clientId: ANY_CLIENT_ID
-        }
+        bookedRoom(ROOM_ONE_NAME),
+        bookedRoom(ROOM_TWO_NAME),
       ];
 
       const sut = sutWith(bookedRooms);
