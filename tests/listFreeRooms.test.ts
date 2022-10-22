@@ -68,4 +68,36 @@ describe('List free rooms use case', () => {
       name: ROOM_THREE_NAME
     }]);
   });
+
+  it('given no bookings, it lists all the rooms', async () => {
+    // given
+    const bookedRooms = [];
+
+    const readRegistry: BookingReadRegistry = {
+      getAll() {
+        return Promise.resolve(bookedRooms);
+      },
+    };
+
+    const sut = new BookingQuery(readRegistry);
+
+    // when
+    const freeRooms: Room[] = await sut.freeRooms(
+      new Date(2020, 1, 5),
+      new Date(2020, 1, 9)
+    );
+
+    // then
+    expect(freeRooms).toEqual([
+      {
+        name: ROOM_ONE_NAME,
+      },
+      {
+        name: ROOM_TWO_NAME
+      },
+      {
+        name: ROOM_THREE_NAME
+      }
+    ]);
+  });
 });
