@@ -38,6 +38,9 @@ export class BookingQuery {
           {
             start: _arrival,
             end: _departure
+          },
+          {
+            inclusive: true
           }
         )) {
           return booking;
