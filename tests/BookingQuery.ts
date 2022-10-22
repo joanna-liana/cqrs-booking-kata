@@ -4,7 +4,7 @@ export interface Room {
   name: string;
 }
 
-interface Booking {
+export interface Booking {
   clientId: string;
   roomName: string;
   arrivalDate: Date;

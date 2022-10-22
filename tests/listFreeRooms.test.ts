@@ -1,4 +1,5 @@
 import {
+  Booking,
   BookingQuery,
   BookingReadRegistry,
   Room,
@@ -27,13 +28,7 @@ describe('List free rooms use case', () => {
       }
     ];
 
-    const readRegistry: BookingReadRegistry = {
-      getAll() {
-        return Promise.resolve(bookedRooms);
-      },
-    };
-
-    const sut = new BookingQuery(readRegistry);
+    const sut = sutWith(bookedRooms);
 
     // when
     const freeRooms: Room[] = await sut.freeRooms(
@@ -51,13 +46,7 @@ describe('List free rooms use case', () => {
     // given
     const bookedRooms = [];
 
-    const readRegistry: BookingReadRegistry = {
-      getAll() {
-        return Promise.resolve(bookedRooms);
-      },
-    };
-
-    const sut = new BookingQuery(readRegistry);
+    const sut = sutWith(bookedRooms);
 
     // when
     const freeRooms: Room[] = await sut.freeRooms(
@@ -79,3 +68,15 @@ describe('List free rooms use case', () => {
     ]);
   });
 });
+
+function sutWith(bookedRooms: Booking[]): BookingQuery {
+  const readRegistry: BookingReadRegistry = {
+    getAll() {
+      return Promise.resolve(bookedRooms);
+    },
+  };
+
+  const sut = new BookingQuery(readRegistry);
+
+  return sut;
+}
