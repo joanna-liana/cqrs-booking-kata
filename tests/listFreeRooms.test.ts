@@ -1,3 +1,5 @@
+import { addDays, subDays } from 'date-fns';
+
 import {
   Booking,
   BookingQuery,
@@ -47,7 +49,7 @@ describe('List free rooms use case', () => {
 
   it('given no bookings, it lists all the rooms', async () => {
     // given
-    const bookedRooms = [];
+    const bookedRooms: Booking[] = [];
 
     const sut = sutWith(bookedRooms);
 
@@ -105,6 +107,63 @@ describe('List free rooms use case', () => {
     // then
     expect(freeRooms).toEqual([]);
   });
+
+  describe('Booked room filter rules', () => {
+    const BOOKED_ROOM = ROOM_ONE_NAME;
+
+    const FREE_ROOMS = [
+      {
+        name: ROOM_TWO_NAME
+      },
+      {
+        name: ROOM_THREE_NAME
+      }
+    ];
+
+    function bookedBetween(period: {
+      arrival: Date;
+      departure: Date;
+    }): Booking {
+      return {
+        roomName: BOOKED_ROOM,
+        arrivalDate: period.arrival,
+        departureDate: period.departure,
+        clientId: ANY_CLIENT_ID
+      };
+    }
+
+    const testCases = [
+      bookedBetween({
+        arrival: ARRIVAL_DATE, departure: DEPARTURE_DATE
+      }),
+      // bookedBetween({
+      //   arrival: subDays(ARRIVAL_DATE, 1), departure: DEPARTURE_DATE
+      // }),
+      // bookedBetween({
+      //   arrival: ARRIVAL_DATE, departure: subDays(DEPARTURE_DATE, 1)
+      // }),
+      // bookedBetween({
+      //   arrival: addDays(ARRIVAL_DATE, 1), departure: DEPARTURE_DATE
+      // }),
+      // bookedBetween({
+      //   arrival: ARRIVAL_DATE, departure: addDays(DEPARTURE_DATE, 1)
+      // }),
+    ];
+
+    it.each(testCases)('exclude overlapping dates', async (bookedRoom) => {
+      const sut = sutWith([bookedRoom]);
+
+      // when
+      const freeRooms: Room[] = await sut.freeRooms(
+        ARRIVAL_DATE,
+        DEPARTURE_DATE
+      );
+
+      // then
+      expect(freeRooms).toEqual(FREE_ROOMS);
+    });
+  });
+
 });
 
 function sutWith(bookedRooms: Booking[]): BookingQuery {
