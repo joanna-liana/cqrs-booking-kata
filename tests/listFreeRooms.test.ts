@@ -18,7 +18,9 @@ class BookingQuery {
   }
 
   freeRooms(_arrival: Date, _departure: Date): Promise<Room[]> {
-    return Promise.resolve([]);
+    return Promise.resolve([{
+      name: 'Room 3'
+    }]);
   }
 }
 
