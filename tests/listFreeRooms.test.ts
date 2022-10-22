@@ -8,7 +8,7 @@ import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
   ROOM_TWO_NAME,
-} from './BookingQuery';
+} from '../src/BookingQuery';
 
 describe('List free rooms use case', () => {
   const ANY_CLIENT_ID = 'client1';
@@ -17,11 +17,14 @@ describe('List free rooms use case', () => {
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
   describe('Key scenarios', () => {
-    function bookedRoom(roomName: string): Booking {
+    function bookedRoom(
+      roomName: string,
+      period?: { arrivalDate: Date; departureDate: Date; }
+    ): Booking {
       return ({
         roomName,
-        arrivalDate: ARRIVAL_DATE,
-        departureDate: DEPARTURE_DATE,
+        arrivalDate: period?.arrivalDate ?? ARRIVAL_DATE,
+        departureDate: period?.departureDate ?? DEPARTURE_DATE,
         clientId: ANY_CLIENT_ID
       });
     }
@@ -45,6 +48,42 @@ describe('List free rooms use case', () => {
       expect(freeRooms).toEqual([{
         name: ROOM_THREE_NAME
       }]);
+    });
+
+    it('list a room as free if it is booked on a different date', async () => {
+      // given
+      const ROOM_NAME_BOOKED_ON_DIFFERENT_DATES = ROOM_ONE_NAME;
+      const bookedRooms = [
+        bookedRoom(
+          ROOM_NAME_BOOKED_ON_DIFFERENT_DATES,
+          {
+            arrivalDate: subDays(ARRIVAL_DATE, 2),
+            departureDate: subDays(ARRIVAL_DATE, 1)
+          }
+        ),
+        bookedRoom(
+          ROOM_NAME_BOOKED_ON_DIFFERENT_DATES,
+          {
+            arrivalDate: addDays(DEPARTURE_DATE, 1),
+            departureDate: addDays(DEPARTURE_DATE, 2)
+          }
+        ),
+      ];
+
+      const sut = sutWith(bookedRooms);
+
+      // when
+      const freeRooms: Room[] = await sut.freeRooms(
+        ARRIVAL_DATE,
+        DEPARTURE_DATE
+      );
+
+      // then
+      const freeRoomNames = freeRooms.map(r => r.name);
+
+      expect(
+        freeRoomNames.includes(ROOM_NAME_BOOKED_ON_DIFFERENT_DATES)
+      ).toBeTruthy();
     });
 
     it('given no bookings, it lists all the rooms', async () => {
@@ -94,6 +133,7 @@ describe('List free rooms use case', () => {
     });
   });
 
+  // TODO: stryker
   describe('Booked room filter rules', () => {
     const BOOKED_ROOM = ROOM_ONE_NAME;
 
