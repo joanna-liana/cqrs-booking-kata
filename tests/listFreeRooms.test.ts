@@ -11,13 +11,16 @@ import {
 describe('List free rooms use case', () => {
   const ANY_CLIENT_ID = 'client1';
 
+  const ARRIVAL_DATE = new Date(2020, 1, 5);
+  const DEPARTURE_DATE = new Date(2020, 1, 9);
+
   it('list only free rooms in the given period', async () => {
     // given
     const bookedRooms = [
       {
         roomName: ROOM_ONE_NAME,
         arrivalDate: new Date(2020, 1, 1),
-        departureDate: new Date(2020, 1, 5),
+        departureDate: ARRIVAL_DATE,
         clientId: ANY_CLIENT_ID
       },
       {
@@ -32,8 +35,8 @@ describe('List free rooms use case', () => {
 
     // when
     const freeRooms: Room[] = await sut.freeRooms(
-      new Date(2020, 1, 5),
-      new Date(2020, 1, 9)
+      ARRIVAL_DATE,
+      DEPARTURE_DATE
     );
 
     // then
@@ -50,8 +53,8 @@ describe('List free rooms use case', () => {
 
     // when
     const freeRooms: Room[] = await sut.freeRooms(
-      new Date(2020, 1, 5),
-      new Date(2020, 1, 9)
+      ARRIVAL_DATE,
+      DEPARTURE_DATE
     );
 
     // then
