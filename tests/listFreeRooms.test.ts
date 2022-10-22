@@ -16,97 +16,97 @@ describe('List free rooms use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
-  it('list only free rooms in the given period', async () => {
-    // given
-    const bookedRooms = [
-      {
-        roomName: ROOM_ONE_NAME,
-        arrivalDate: new Date(2020, 1, 1),
-        departureDate: ARRIVAL_DATE,
-        clientId: ANY_CLIENT_ID
-      },
-      {
-        roomName: ROOM_TWO_NAME,
-        arrivalDate: new Date(2020, 1, 10),
-        departureDate: new Date(2020, 1, 12),
-        clientId: ANY_CLIENT_ID
-      }
-    ];
+  // it('list only free rooms in the given period', async () => {
+  //   // given
+  //   const bookedRooms = [
+  //     {
+  //       roomName: ROOM_ONE_NAME,
+  //       arrivalDate: new Date(2020, 1, 1),
+  //       departureDate: ARRIVAL_DATE,
+  //       clientId: ANY_CLIENT_ID
+  //     },
+  //     {
+  //       roomName: ROOM_TWO_NAME,
+  //       arrivalDate: ARRIVAL_DATE,
+  //       departureDate: DEPARTURE_DATE,
+  //       clientId: ANY_CLIENT_ID
+  //     }
+  //   ];
 
-    const sut = sutWith(bookedRooms);
+  //   const sut = sutWith(bookedRooms);
 
-    // when
-    const freeRooms: Room[] = await sut.freeRooms(
-      ARRIVAL_DATE,
-      DEPARTURE_DATE
-    );
+  //   // when
+  //   const freeRooms: Room[] = await sut.freeRooms(
+  //     ARRIVAL_DATE,
+  //     DEPARTURE_DATE
+  //   );
 
-    // then
-    expect(freeRooms).toEqual([{
-      name: ROOM_THREE_NAME
-    }]);
-  });
+  //   // then
+  //   expect(freeRooms).toEqual([{
+  //     name: ROOM_THREE_NAME
+  //   }]);
+  // });
 
-  it('given no bookings, it lists all the rooms', async () => {
-    // given
-    const bookedRooms: Booking[] = [];
+  // it('given no bookings, it lists all the rooms', async () => {
+  //   // given
+  //   const bookedRooms: Booking[] = [];
 
-    const sut = sutWith(bookedRooms);
+  //   const sut = sutWith(bookedRooms);
 
-    // when
-    const freeRooms: Room[] = await sut.freeRooms(
-      ARRIVAL_DATE,
-      DEPARTURE_DATE
-    );
+  //   // when
+  //   const freeRooms: Room[] = await sut.freeRooms(
+  //     ARRIVAL_DATE,
+  //     DEPARTURE_DATE
+  //   );
 
-    // then
-    expect(freeRooms).toEqual([
-      {
-        name: ROOM_ONE_NAME,
-      },
-      {
-        name: ROOM_TWO_NAME
-      },
-      {
-        name: ROOM_THREE_NAME
-      }
-    ]);
-  });
+  //   // then
+  //   expect(freeRooms).toEqual([
+  //     {
+  //       name: ROOM_ONE_NAME,
+  //     },
+  //     {
+  //       name: ROOM_TWO_NAME
+  //     },
+  //     {
+  //       name: ROOM_THREE_NAME
+  //     }
+  //   ]);
+  // });
 
-  it('given all rooms booked, it lists all no rooms', async () => {
-    // given
-    const bookedRooms = [
-      {
-        roomName: ROOM_ONE_NAME,
-        arrivalDate: new Date(2020, 1, 1),
-        departureDate: ARRIVAL_DATE,
-        clientId: ANY_CLIENT_ID
-      },
-      {
-        roomName: ROOM_TWO_NAME,
-        arrivalDate: new Date(2020, 1, 10),
-        departureDate: new Date(2020, 1, 12),
-        clientId: ANY_CLIENT_ID
-      },
-      {
-        roomName: ROOM_THREE_NAME,
-        arrivalDate: new Date(2020, 1, 11),
-        departureDate: new Date(2020, 1, 12),
-        clientId: ANY_CLIENT_ID
-      }
-    ];
+  // it('given all rooms booked, it lists all no rooms', async () => {
+  //   // given
+  //   const bookedRooms = [
+  //     {
+  //       roomName: ROOM_ONE_NAME,
+  //       arrivalDate: new Date(2020, 1, 1),
+  //       departureDate: ARRIVAL_DATE,
+  //       clientId: ANY_CLIENT_ID
+  //     },
+  //     {
+  //       roomName: ROOM_TWO_NAME,
+  //       arrivalDate: new Date(2020, 1, 10),
+  //       departureDate: new Date(2020, 1, 12),
+  //       clientId: ANY_CLIENT_ID
+  //     },
+  //     {
+  //       roomName: ROOM_THREE_NAME,
+  //       arrivalDate: new Date(2020, 1, 11),
+  //       departureDate: new Date(2020, 1, 12),
+  //       clientId: ANY_CLIENT_ID
+  //     }
+  //   ];
 
-    const sut = sutWith(bookedRooms);
+  //   const sut = sutWith(bookedRooms);
 
-    // when
-    const freeRooms: Room[] = await sut.freeRooms(
-      ARRIVAL_DATE,
-      DEPARTURE_DATE
-    );
+  //   // when
+  //   const freeRooms: Room[] = await sut.freeRooms(
+  //     ARRIVAL_DATE,
+  //     DEPARTURE_DATE
+  //   );
 
-    // then
-    expect(freeRooms).toEqual([]);
-  });
+  //   // then
+  //   expect(freeRooms).toEqual([]);
+  // });
 
   describe('Booked room filter rules', () => {
     const BOOKED_ROOM = ROOM_ONE_NAME;
@@ -150,6 +150,12 @@ describe('List free rooms use case', () => {
       }),
       bookedBetween({
         arrival: addDays(ARRIVAL_DATE, 1), departure: subDays(DEPARTURE_DATE, 1)
+      }),
+      bookedBetween({
+        arrival: subDays(ARRIVAL_DATE, 1), departure: ARRIVAL_DATE
+      }),
+      bookedBetween({
+        arrival: DEPARTURE_DATE, departure: addDays(DEPARTURE_DATE, 1)
       }),
     ];
 
