@@ -1,0 +1,69 @@
+interface Room {
+  name: string;
+}
+
+interface Booking {
+  clientId: string;
+  roomName: string;
+  arrivalDate: Date;
+  departureDate: Date;
+}
+
+interface BookingReadRegistry {
+  getAll(): Promise<Booking[]>;
+}
+
+class BookingQuery {
+  constructor(private readonly registry: BookingReadRegistry) {
+  }
+
+  freeRooms(_arrival: Date, _departure: Date): Promise<Room[]> {
+    return Promise.resolve([]);
+  }
+}
+
+describe('List free rooms use case', () => {
+  const ROOM_ONE_NAME = 'Room 1';
+  const ROOM_TWO_NAME = 'Room 2';
+  const ROOM_THREE_NAME = 'Room 3';
+  const ANY_CLIENT_ID = 'client1';
+
+  const ALL_ROOM_NAMES = [ROOM_ONE_NAME, ROOM_TWO_NAME, ROOM_THREE_NAME];
+
+  it('list only free rooms in the given period', async () => {
+    // given
+    const bookedRooms = [
+      {
+        roomName: ROOM_ONE_NAME,
+        arrivalDate: new Date(2020, 1, 1),
+        departureDate: new Date(2020, 1, 5),
+        clientId: ANY_CLIENT_ID
+      },
+      {
+        roomName: ROOM_TWO_NAME,
+        arrivalDate: new Date(2020, 1, 10),
+        departureDate: new Date(2020, 1, 12),
+        clientId: ANY_CLIENT_ID
+      }
+    ];
+
+    const readRegistry: BookingReadRegistry = {
+      getAll() {
+        return Promise.resolve(bookedRooms);
+      },
+    };
+
+    const sut = new BookingQuery(readRegistry);
+
+    // when
+    const freeRooms: Room[] = await sut.freeRooms(
+      new Date(2020, 1, 5),
+      new Date(2020, 1, 9)
+    );
+
+    // then
+    expect(freeRooms).toEqual([{
+      name: ROOM_THREE_NAME
+    }]);
+  });
+});
