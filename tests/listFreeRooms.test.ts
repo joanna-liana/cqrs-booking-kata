@@ -70,6 +70,41 @@ describe('List free rooms use case', () => {
       }
     ]);
   });
+
+  it('given all rooms booked, it lists all no rooms', async () => {
+    // given
+    const bookedRooms = [
+      {
+        roomName: ROOM_ONE_NAME,
+        arrivalDate: new Date(2020, 1, 1),
+        departureDate: ARRIVAL_DATE,
+        clientId: ANY_CLIENT_ID
+      },
+      {
+        roomName: ROOM_TWO_NAME,
+        arrivalDate: new Date(2020, 1, 10),
+        departureDate: new Date(2020, 1, 12),
+        clientId: ANY_CLIENT_ID
+      },
+      {
+        roomName: ROOM_THREE_NAME,
+        arrivalDate: new Date(2020, 1, 11),
+        departureDate: new Date(2020, 1, 12),
+        clientId: ANY_CLIENT_ID
+      }
+    ];
+
+    const sut = sutWith(bookedRooms);
+
+    // when
+    const freeRooms: Room[] = await sut.freeRooms(
+      ARRIVAL_DATE,
+      DEPARTURE_DATE
+    );
+
+    // then
+    expect(freeRooms).toEqual([]);
+  });
 });
 
 function sutWith(bookedRooms: Booking[]): BookingQuery {
