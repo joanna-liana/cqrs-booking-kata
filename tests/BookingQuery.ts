@@ -40,10 +40,10 @@ export class BookingQuery {
             end: _departure
           }
         )) {
-          return null;
+          return booking;
         }
 
-        return booking;
+        return null;
       })
       .filter(Boolean)
       .map(booking => booking?.roomName);
