@@ -76,24 +76,9 @@ describe('List free rooms use case', () => {
     it('given all rooms booked, it lists all no rooms', async () => {
       // given
       const bookedRooms = [
-        {
-          roomName: ROOM_ONE_NAME,
-          arrivalDate: new Date(2020, 1, 1),
-          departureDate: ARRIVAL_DATE,
-          clientId: ANY_CLIENT_ID
-        },
-        {
-          roomName: ROOM_TWO_NAME,
-          arrivalDate: new Date(2020, 1, 10),
-          departureDate: new Date(2020, 1, 12),
-          clientId: ANY_CLIENT_ID
-        },
-        {
-          roomName: ROOM_THREE_NAME,
-          arrivalDate: new Date(2020, 1, 11),
-          departureDate: new Date(2020, 1, 12),
-          clientId: ANY_CLIENT_ID
-        }
+        bookedRoom(ROOM_ONE_NAME),
+        bookedRoom(ROOM_TWO_NAME),
+        bookedRoom(ROOM_THREE_NAME),
       ];
 
       const sut = sutWith(bookedRooms);
