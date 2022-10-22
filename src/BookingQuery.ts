@@ -46,7 +46,6 @@ export class BookingQuery {
 
         return isRoomUnavailable ? booking : null;
       })
-      .filter(Boolean)
       .map(booking => booking?.roomName);
 
     const freeRooms: Room[] = ALL_ROOM_NAMES
