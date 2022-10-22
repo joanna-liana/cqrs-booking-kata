@@ -25,34 +25,32 @@ export class BookingQuery {
   constructor(private readonly registry: BookingReadRegistry) {
   }
 
-  async freeRooms(_arrival: Date, _departure: Date): Promise<Room[]> {
+  async freeRooms(arrival: Date, departure: Date): Promise<Room[]> {
     const bookings = await this.registry.getAll();
 
-    const unavailableRoomNames = bookings
+    const bookedRoomNames = bookings
       .map(booking => {
-        if (areIntervalsOverlapping(
+        const isRoomUnavailable = areIntervalsOverlapping(
           {
             start: booking.arrivalDate,
             end: booking.departureDate
           },
           {
-            start: _arrival,
-            end: _departure
+            start: arrival,
+            end: departure
           },
           {
             inclusive: true
           }
-        )) {
-          return booking;
-        }
+        );
 
-        return null;
+        return isRoomUnavailable ? booking : null;
       })
       .filter(Boolean)
       .map(booking => booking?.roomName);
 
     const freeRooms: Room[] = ALL_ROOM_NAMES
-      .filter(name => !unavailableRoomNames.includes(name))
+      .filter(name => !bookedRoomNames.includes(name))
       .map(name => ({
         name
       }));
