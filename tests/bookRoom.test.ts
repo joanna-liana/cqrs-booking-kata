@@ -41,7 +41,7 @@ describe('Book a room use case', () => {
     await sut.bookARoom(booking);
 
     // then
-    expect(() => sut.bookARoom(booking)).toThrowError();
+    await expect(() => sut.bookARoom(booking)).rejects.toBeTruthy();
   });
 });
 
