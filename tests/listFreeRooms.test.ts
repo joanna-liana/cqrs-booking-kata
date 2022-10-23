@@ -4,11 +4,13 @@ import {
   Booking,
   BookingQuery,
   BookingReadRegistry,
-  Room,
+  Room
+} from '../src/BookingQuery';
+import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
   ROOM_TWO_NAME,
-} from '../src/BookingQuery';
+} from '../src/rooms';
 
 describe('List free rooms use case', () => {
   const ANY_CLIENT_ID = 'client1';

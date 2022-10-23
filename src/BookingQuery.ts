@@ -1,5 +1,7 @@
 import { areIntervalsOverlapping } from 'date-fns';
 
+import { ALL_ROOM_NAMES } from './rooms';
+
 export interface Room {
   name: string;
 }
@@ -14,12 +16,6 @@ export interface Booking {
 export interface BookingReadRegistry {
   getAll(): Promise<Booking[]>;
 }
-
-export const ROOM_ONE_NAME = 'Room 1';
-export const ROOM_TWO_NAME = 'Room 2';
-export const ROOM_THREE_NAME = 'Room 3';
-
-const ALL_ROOM_NAMES = [ROOM_ONE_NAME, ROOM_TWO_NAME, ROOM_THREE_NAME];
 
 export class BookingQuery {
   constructor(private readonly registry: BookingReadRegistry) {
