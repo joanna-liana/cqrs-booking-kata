@@ -2,10 +2,10 @@ import { addDays, subDays } from 'date-fns';
 
 import {
   Booking,
-  BookingQuery,
+  BookingQueryHandler,
   BookingReadRegistry,
   Room
-} from '../src/BookingQuery';
+} from '../src/BookingQueryHandler';
 import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
@@ -190,14 +190,14 @@ describe('List free rooms use case', () => {
 
 });
 
-function sutWith(bookedRooms: Booking[]): BookingQuery {
+function sutWith(bookedRooms: Booking[]): BookingQueryHandler {
   const readRegistry: BookingReadRegistry = {
     getAll() {
       return Promise.resolve(bookedRooms);
     },
   };
 
-  const sut = new BookingQuery(readRegistry);
+  const sut = new BookingQueryHandler(readRegistry);
 
   return sut;
 }

@@ -17,7 +17,7 @@ export interface BookingReadRegistry {
   getAll(): Promise<Booking[]>;
 }
 
-export class BookingQuery {
+export class BookingQueryHandler {
   constructor(private readonly registry: BookingReadRegistry) {
   }
 
