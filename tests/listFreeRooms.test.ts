@@ -117,22 +117,10 @@ describe('List free rooms use case', () => {
         arrival: subDays(ARRIVAL_DATE, 1), departure: DEPARTURE_DATE
       }),
       bookedBetween({
-        arrival: ARRIVAL_DATE, departure: subDays(DEPARTURE_DATE, 1)
-      }),
-      bookedBetween({
         arrival: addDays(ARRIVAL_DATE, 1), departure: DEPARTURE_DATE
       }),
       bookedBetween({
-        arrival: ARRIVAL_DATE, departure: addDays(DEPARTURE_DATE, 1)
-      }),
-      bookedBetween({
         arrival: addDays(ARRIVAL_DATE, 1), departure: subDays(DEPARTURE_DATE, 1)
-      }),
-      bookedBetween({
-        arrival: subDays(ARRIVAL_DATE, 1), departure: ARRIVAL_DATE
-      }),
-      bookedBetween({
-        arrival: DEPARTURE_DATE, departure: addDays(DEPARTURE_DATE, 1)
       }),
     ];
 
