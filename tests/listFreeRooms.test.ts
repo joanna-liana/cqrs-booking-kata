@@ -170,6 +170,10 @@ describe('List free rooms use case', () => {
         arrival: subDays(ARRIVAL_DATE, 2),
         departure: ARRIVAL_DATE
       }),
+      bookedBetween({
+        arrival: DEPARTURE_DATE,
+        departure: addDays(DEPARTURE_DATE, 1)
+      }),
     ];
 
     it.each(roomAvailableTestCases)(
