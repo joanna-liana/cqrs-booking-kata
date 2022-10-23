@@ -102,6 +102,27 @@ describe('Free room finder', () => {
     }
   );
 
+  it(
+    // eslint-disable-next-line max-len
+    'the room is available if it has no bookings',
+    async () => {
+      const sut = sutWith([]);
+
+      // when
+      const freeRooms: Room[] = await sut.freeRooms(
+        ARRIVAL_DATE,
+        DEPARTURE_DATE
+      );
+
+      const freeRoomNames = freeRooms.map(r => r.name);
+
+      // then
+      expect(
+        freeRoomNames.includes(BOOKED_ROOM)
+      ).toBeTruthy();
+    }
+  );
+
 });
 
 function sutWith(bookedRooms: ExistingBooking[]): {
