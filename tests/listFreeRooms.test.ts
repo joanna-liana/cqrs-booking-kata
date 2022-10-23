@@ -133,18 +133,8 @@ describe('List free rooms use case', () => {
     });
   });
 
-  // TODO: stryker
   describe('Booked room filter rules', () => {
     const BOOKED_ROOM = ROOM_ONE_NAME;
-
-    const FREE_ROOMS = [
-      {
-        name: ROOM_TWO_NAME
-      },
-      {
-        name: ROOM_THREE_NAME
-      }
-    ];
 
     function bookedBetween(period: {
       arrival: Date;
@@ -158,7 +148,7 @@ describe('List free rooms use case', () => {
       };
     }
 
-    const testCases = [
+    const roomUnavailableTestCases = [
       bookedBetween({
         arrival: ARRIVAL_DATE, departure: DEPARTURE_DATE
       }),
@@ -185,18 +175,58 @@ describe('List free rooms use case', () => {
       }),
     ];
 
-    it.each(testCases)('exclude overlapping dates', async (bookedRoom) => {
-      const sut = sutWith([bookedRoom]);
+    it.each(roomUnavailableTestCases)(
+      // eslint-disable-next-line max-len
+      'the room is not available if its existing bookings overlap with the requested period',
+      async (bookedRoom) => {
+        const sut = sutWith([bookedRoom]);
 
-      // when
-      const freeRooms: Room[] = await sut.freeRooms(
-        ARRIVAL_DATE,
-        DEPARTURE_DATE
-      );
+        // when
+        const freeRooms: Room[] = await sut.freeRooms(
+          ARRIVAL_DATE,
+          DEPARTURE_DATE
+        );
 
-      // then
-      expect(freeRooms).toEqual(FREE_ROOMS);
-    });
+        const freeRoomNames = freeRooms.map(r => r.name);
+
+        // then
+        expect(
+          freeRoomNames.includes(BOOKED_ROOM)
+        ).toBeFalsy();
+      }
+    );
+
+    const roomAvailableTestCases = [
+      bookedBetween({
+        arrival: subDays(ARRIVAL_DATE, 2),
+        departure: subDays(ARRIVAL_DATE, 1)
+      }),
+      bookedBetween({
+        arrival: addDays(DEPARTURE_DATE, 1),
+        departure: addDays(DEPARTURE_DATE, 2)
+      })
+    ];
+
+    it.each(roomAvailableTestCases)(
+      // eslint-disable-next-line max-len
+      'the room is available if its existing reservations fall outside of the requested period',
+      async (bookedRoom) => {
+        const sut = sutWith([bookedRoom]);
+
+        // when
+        const freeRooms: Room[] = await sut.freeRooms(
+          ARRIVAL_DATE,
+          DEPARTURE_DATE
+        );
+
+        const freeRoomNames = freeRooms.map(r => r.name);
+
+        // then
+        expect(
+          freeRoomNames.includes(BOOKED_ROOM)
+        ).toBeTruthy();
+      }
+    );
   });
 
 });
