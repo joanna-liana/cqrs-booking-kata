@@ -1,3 +1,4 @@
+import { FindFreeRoom, findFreeRoom } from '../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
 } from '../src/rooms';
@@ -10,9 +11,31 @@ export interface Booking {
 }
 
 class BookingCommand {
-  constructor(private readonly writeRegistry: BookingWriteRegistry) {}
+  constructor(
+    private readonly writeRegistry: BookingWriteRegistry,
+    private readonly findFreeRoom: FindFreeRoom
+  ) {}
 
-  bookARoom(booking: Booking): Promise<void> {
+  async bookARoom(booking: Booking): Promise<void> {
+    const roomBookings = await this.writeRegistry
+      .getRoomBookings(booking.roomName);
+
+    const freeRooms = await this.findFreeRoom(
+      roomBookings,
+      {
+        arrival: booking.arrivalDate,
+        departure: booking.departureDate
+      }
+    );
+
+    const isRoomFree = !!freeRooms
+      .filter(r => r.name === booking.roomName)
+      .length;
+
+    if (!isRoomFree) {
+      throw new Error('The room is unavailable in the requested period');
+    }
+
     return this.writeRegistry.makeABooking(booking);
   }
 }
@@ -47,14 +70,24 @@ describe('Book a room use case', () => {
 
 export interface BookingWriteRegistry {
   makeABooking(booking: Booking): Promise<void>;
+  getRoomBookings(roomName: string): Promise<Booking[]>;
 }
 
-function sutWith(_bookedRooms: Booking[]): BookingCommand {
-  const writeRegistry: BookingWriteRegistry = {
-    makeABooking() {
-      return Promise.resolve();
-    },
-  };
+function sutWith(bookedRooms: Booking[]): BookingCommand {
+  class InMemoryWriteRegistry implements BookingWriteRegistry {
+    constructor(private readonly bookings: Booking[]) {}
 
-  return new BookingCommand(writeRegistry);
+    makeABooking(booking: Booking): Promise<void> {
+      this.bookings.push(booking);
+
+      return Promise.resolve();
+    }
+    getRoomBookings(roomName: string): Promise<Booking[]> {
+      return Promise.resolve(bookedRooms.filter(b => b.roomName === roomName));
+    }
+  }
+
+  const writeRegistry = new InMemoryWriteRegistry(bookedRooms);
+
+  return new BookingCommand(writeRegistry, findFreeRoom);
 }
