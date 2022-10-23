@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 
 import {
   Booking,
@@ -11,6 +10,8 @@ import {
   BookingQueryHandler,
   BookingReadRegistry,
 } from '../../src/BookingQueryHandler';
+import { EventBus } from '../../src/events/EventBus';
+import { InMemoryEventBus } from '../../src/events/InMemoryEventBus';
 import { findFreeRoom } from '../../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
@@ -23,11 +24,10 @@ describe('Book a room use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
-  // TODO: add a generic interface
-  let eventBus: any;
+  let eventBus: EventBus;
 
   beforeEach(() => {
-    eventBus = new EventEmitter();
+    eventBus = new InMemoryEventBus();
   });
 
 
@@ -81,7 +81,7 @@ describe('Book a room use case', () => {
 
 function commandHandlerWith(
   bookedRooms: Booking[],
-  eventBus: any
+  eventBus: EventBus
 ): BookingCommandHandler {
   class InMemoryWriteRegistry implements BookingWriteRegistry {
     constructor(private readonly bookings: Booking[]) {}
