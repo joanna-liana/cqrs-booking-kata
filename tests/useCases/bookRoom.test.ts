@@ -62,7 +62,6 @@ describe('Book a room use case', () => {
 
     const freeRoomNames = freeRooms.map(r => r.name);
 
-    // TODO: WHY IS THIS PASSING?
     expect(freeRoomNames.includes(ROOM_TO_BOOK_NAME)).toBeFalsy();
 
   });
@@ -82,7 +81,7 @@ function commandHandlerWith(bookedRooms: Booking[]): BookingCommandHandler {
     }
   }
 
-  const writeRegistry = new InMemoryWriteRegistry(bookedRooms);
+  const writeRegistry = new InMemoryWriteRegistry([...bookedRooms]);
 
   return new BookingCommandHandler(writeRegistry, findFreeRoom);
 }
@@ -90,7 +89,7 @@ function commandHandlerWith(bookedRooms: Booking[]): BookingCommandHandler {
 function queryHandlerWith(bookedRooms: Booking[]): BookingQueryHandler {
   const readRegistry: BookingReadRegistry = {
     getAll() {
-      return Promise.resolve(bookedRooms);
+      return Promise.resolve([...bookedRooms]);
     },
   };
 
