@@ -4,9 +4,11 @@ import {
   Booking,
   BookingQueryHandler,
   BookingReadRegistry,
-  findFreeRoom,
   Room
 } from '../src/BookingQueryHandler';
+import {
+  findFreeRoom,
+} from '../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
