@@ -1,19 +1,17 @@
 import { addDays, subDays } from 'date-fns';
 
 import {
-  Booking,
   Room
 } from '../src/BookingQueryHandler';
 import {
-  findFreeRoom,
+  ExistingBooking,
+  findFreeRoom
 } from '../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
 } from '../src/rooms';
 
 describe('Free room finder', () => {
-  const ANY_CLIENT_ID = 'client1';
-
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
@@ -22,12 +20,11 @@ describe('Free room finder', () => {
   function bookedBetween(period: {
     arrival: Date;
     departure: Date;
-  }): Booking {
+  }): ExistingBooking {
     return {
       roomName: BOOKED_ROOM,
       arrivalDate: period.arrival,
       departureDate: period.departure,
-      clientId: ANY_CLIENT_ID
     };
   }
 
@@ -109,7 +106,7 @@ describe('Free room finder', () => {
 
 });
 
-function sutWith(bookedRooms: Booking[]): {
+function sutWith(bookedRooms: ExistingBooking[]): {
   freeRooms: (arrival: Date, departure: Date) => Promise<Room[]>;
 } {
   return {
