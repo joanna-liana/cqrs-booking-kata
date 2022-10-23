@@ -1,8 +1,10 @@
 import { areIntervalsOverlapping } from 'date-fns';
 
-import { Room } from './BookingQueryHandler';
 import { ALL_ROOM_NAMES } from './rooms';
 
+export interface Room {
+  name: string;
+}
 export interface ExistingBooking {
   roomName: string;
   arrivalDate: Date;

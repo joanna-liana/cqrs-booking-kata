@@ -1,11 +1,9 @@
 import { addDays, subDays } from 'date-fns';
 
 import {
-  Room
-} from '../src/BookingQueryHandler';
-import {
   ExistingBooking,
-  findFreeRoom
+  findFreeRoom,
+  Room
 } from '../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
