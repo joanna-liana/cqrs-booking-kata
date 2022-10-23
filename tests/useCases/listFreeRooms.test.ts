@@ -3,15 +3,15 @@ import {
   BookingQueryHandler,
   BookingReadRegistry,
   Room
-} from '../src/BookingQueryHandler';
+} from '../../src/BookingQueryHandler';
 import {
   findFreeRoom,
-} from '../src/freeRoomFinder';
+} from '../../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
   ROOM_TWO_NAME,
-} from '../src/rooms';
+} from '../../src/rooms';
 
 describe('List free rooms use case', () => {
   const ANY_CLIENT_ID = 'client1';

@@ -2,11 +2,11 @@ import {
   Booking,
   BookingCommandHandler,
   BookingWriteRegistry
-} from '../src/BookingCommandHandler';
-import { findFreeRoom } from '../src/freeRoomFinder';
+} from '../../src/BookingCommandHandler';
+import { findFreeRoom } from '../../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
-} from '../src/rooms';
+} from '../../src/rooms';
 
 describe('Book a room use case', () => {
   const ANY_CLIENT_ID = 'client1';
