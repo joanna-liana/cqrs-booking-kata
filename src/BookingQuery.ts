@@ -24,32 +24,43 @@ export class BookingQuery {
   async freeRooms(arrival: Date, departure: Date): Promise<Room[]> {
     const bookings = await this.registry.getAll();
 
-    const bookedRoomNames = bookings
-      .map(booking => {
-        const isRoomUnavailable = areIntervalsOverlapping(
-          {
-            start: booking.arrivalDate,
-            end: booking.departureDate
-          },
-          {
-            start: arrival,
-            end: departure
-          },
-          {
-            inclusive: false
-          }
-        );
-
-        return isRoomUnavailable ? booking : null;
-      })
-      .map(booking => booking?.roomName);
-
-    const freeRooms: Room[] = ALL_ROOM_NAMES
-      .filter(name => !bookedRoomNames.includes(name))
-      .map(name => ({
-        name
-      }));
-
-    return Promise.resolve(freeRooms);
+    return findFreeRoom(bookings, {
+      arrival, departure
+    });
   }
+}
+function findFreeRoom(
+  existingBookings: Booking[],
+  requestedPeriod: {
+    arrival: Date;
+    departure: Date;
+  }
+): Promise<Room[]> {
+  const bookedRoomNames = existingBookings
+    .map(booking => {
+      const isRoomUnavailable = areIntervalsOverlapping(
+        {
+          start: booking.arrivalDate,
+          end: booking.departureDate
+        },
+        {
+          start: requestedPeriod.arrival,
+          end: requestedPeriod.departure
+        },
+        {
+          inclusive: false
+        }
+      );
+
+      return isRoomUnavailable ? booking : null;
+    })
+    .map(booking => booking?.roomName);
+
+  const freeRooms: Room[] = ALL_ROOM_NAMES
+    .filter(name => !bookedRoomNames.includes(name))
+    .map(name => ({
+      name
+    }));
+
+  return Promise.resolve(freeRooms);
 }
