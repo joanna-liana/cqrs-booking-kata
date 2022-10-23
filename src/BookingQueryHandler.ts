@@ -29,8 +29,15 @@ export class BookingQueryHandler {
     });
   }
 }
+
+interface ExistingBooking {
+  roomName: string;
+  arrivalDate: Date;
+  departureDate: Date;
+}
+
 function findFreeRoom(
-  existingBookings: Booking[],
+  existingBookings: ExistingBooking[],
   requestedPeriod: {
     arrival: Date;
     departure: Date;
