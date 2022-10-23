@@ -3,6 +3,10 @@ import {
   BookingCommandHandler,
   BookingWriteRegistry
 } from '../../src/BookingCommandHandler';
+import {
+  BookingQueryHandler,
+  BookingReadRegistry,
+} from '../../src/BookingQueryHandler';
 import { findFreeRoom } from '../../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
@@ -19,7 +23,7 @@ describe('Book a room use case', () => {
     // given
     const bookedRooms = [];
 
-    const sut = sutWith(bookedRooms);
+    const sut = commandHandlerWith(bookedRooms);
 
     const booking = {
       clientId: ANY_CLIENT_ID,
@@ -35,10 +39,36 @@ describe('Book a room use case', () => {
     await expect(() => sut.bookARoom(booking)).rejects.toBeTruthy();
   });
 
-  // TODO: ensure read registry is updated after booking
+  it('ensures the booked room will not be listed as available', async () => {
+    // given
+    const bookedRooms = [];
+
+    const commandHandler = commandHandlerWith(bookedRooms);
+    const queryHandler = queryHandlerWith(bookedRooms);
+
+    const booking = {
+      clientId: ANY_CLIENT_ID,
+      roomName: ROOM_TO_BOOK_NAME,
+      arrivalDate: ARRIVAL_DATE,
+      departureDate: DEPARTURE_DATE,
+    };
+
+    // when
+    await commandHandler.bookARoom(booking);
+
+    // then
+    const freeRooms = await queryHandler
+      .freeRooms(ARRIVAL_DATE, DEPARTURE_DATE);
+
+    const freeRoomNames = freeRooms.map(r => r.name);
+
+    // TODO: WHY IS THIS PASSING?
+    expect(freeRoomNames.includes(ROOM_TO_BOOK_NAME)).toBeFalsy();
+
+  });
 });
 
-function sutWith(bookedRooms: Booking[]): BookingCommandHandler {
+function commandHandlerWith(bookedRooms: Booking[]): BookingCommandHandler {
   class InMemoryWriteRegistry implements BookingWriteRegistry {
     constructor(private readonly bookings: Booking[]) {}
 
@@ -55,4 +85,16 @@ function sutWith(bookedRooms: Booking[]): BookingCommandHandler {
   const writeRegistry = new InMemoryWriteRegistry(bookedRooms);
 
   return new BookingCommandHandler(writeRegistry, findFreeRoom);
+}
+
+function queryHandlerWith(bookedRooms: Booking[]): BookingQueryHandler {
+  const readRegistry: BookingReadRegistry = {
+    getAll() {
+      return Promise.resolve(bookedRooms);
+    },
+  };
+
+  const sut = new BookingQueryHandler(readRegistry, findFreeRoom);
+
+  return sut;
 }
