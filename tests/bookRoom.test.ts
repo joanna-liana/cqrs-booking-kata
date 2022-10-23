@@ -34,6 +34,8 @@ describe('Book a room use case', () => {
     // then
     await expect(() => sut.bookARoom(booking)).rejects.toBeTruthy();
   });
+
+  // TODO: ensure read registry is updated after booking
 });
 
 function sutWith(bookedRooms: Booking[]): BookingCommandHandler {
