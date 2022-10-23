@@ -4,6 +4,7 @@ import {
   Booking,
   BookingQueryHandler,
   BookingReadRegistry,
+  findFreeRoom,
   Room
 } from '../src/BookingQueryHandler';
 import {
@@ -197,7 +198,7 @@ function sutWith(bookedRooms: Booking[]): BookingQueryHandler {
     },
   };
 
-  const sut = new BookingQueryHandler(readRegistry);
+  const sut = new BookingQueryHandler(readRegistry, findFreeRoom);
 
   return sut;
 }

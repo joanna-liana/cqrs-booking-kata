@@ -18,13 +18,16 @@ export interface BookingReadRegistry {
 }
 
 export class BookingQueryHandler {
-  constructor(private readonly registry: BookingReadRegistry) {
+  constructor(
+    private readonly registry: BookingReadRegistry,
+    private readonly findFreeRoom: FindFreeRoom
+  ) {
   }
 
   async freeRooms(arrival: Date, departure: Date): Promise<Room[]> {
     const bookings = await this.registry.getAll();
 
-    return findFreeRoom(bookings, {
+    return this.findFreeRoom(bookings, {
       arrival, departure
     });
   }
@@ -36,7 +39,15 @@ interface ExistingBooking {
   departureDate: Date;
 }
 
-function findFreeRoom(
+type FindFreeRoom = (
+  existingBookings: ExistingBooking[],
+  requestedPeriod: {
+    arrival: Date;
+    departure: Date;
+  }
+) => Promise<Room[]>;
+
+export function findFreeRoom(
   existingBookings: ExistingBooking[],
   requestedPeriod: {
     arrival: Date;
