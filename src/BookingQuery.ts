@@ -40,7 +40,7 @@ export class BookingQuery {
             end: departure
           },
           {
-            inclusive: true
+            inclusive: false
           }
         );
 
