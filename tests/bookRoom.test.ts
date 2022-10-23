@@ -1,44 +1,12 @@
-import { FindFreeRoom, findFreeRoom } from '../src/freeRoomFinder';
+import {
+  Booking,
+  BookingCommandHandler,
+  BookingWriteRegistry
+} from '../src/BookingCommandHandler';
+import { findFreeRoom } from '../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
 } from '../src/rooms';
-
-export interface Booking {
-  clientId: string;
-  roomName: string;
-  arrivalDate: Date;
-  departureDate: Date;
-}
-
-class BookingCommand {
-  constructor(
-    private readonly writeRegistry: BookingWriteRegistry,
-    private readonly findFreeRoom: FindFreeRoom
-  ) {}
-
-  async bookARoom(booking: Booking): Promise<void> {
-    const roomBookings = await this.writeRegistry
-      .getRoomBookings(booking.roomName);
-
-    const freeRooms = await this.findFreeRoom(
-      roomBookings,
-      {
-        arrival: booking.arrivalDate,
-        departure: booking.departureDate
-      }
-    );
-
-    const isRoomFree = !!freeRooms
-      .filter(r => r.name === booking.roomName)
-      .length;
-
-    if (!isRoomFree) {
-      throw new Error('The room is unavailable in the requested period');
-    }
-
-    return this.writeRegistry.makeABooking(booking);
-  }
-}
 
 describe('Book a room use case', () => {
   const ANY_CLIENT_ID = 'client1';
@@ -68,12 +36,7 @@ describe('Book a room use case', () => {
   });
 });
 
-export interface BookingWriteRegistry {
-  makeABooking(booking: Booking): Promise<void>;
-  getRoomBookings(roomName: string): Promise<Booking[]>;
-}
-
-function sutWith(bookedRooms: Booking[]): BookingCommand {
+function sutWith(bookedRooms: Booking[]): BookingCommandHandler {
   class InMemoryWriteRegistry implements BookingWriteRegistry {
     constructor(private readonly bookings: Booking[]) {}
 
@@ -89,5 +52,5 @@ function sutWith(bookedRooms: Booking[]): BookingCommand {
 
   const writeRegistry = new InMemoryWriteRegistry(bookedRooms);
 
-  return new BookingCommand(writeRegistry, findFreeRoom);
+  return new BookingCommandHandler(writeRegistry, findFreeRoom);
 }
