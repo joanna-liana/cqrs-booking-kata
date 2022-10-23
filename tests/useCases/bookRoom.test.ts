@@ -1,9 +1,13 @@
+import { EventEmitter } from 'events';
+
 import {
   Booking,
   BookingCommandHandler,
   BookingWriteRegistry
 } from '../../src/BookingCommandHandler';
 import {
+  // TODO: refactor both read and write models
+  Booking as BookingReadModel,
   BookingQueryHandler,
   BookingReadRegistry,
 } from '../../src/BookingQueryHandler';
@@ -19,11 +23,19 @@ describe('Book a room use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
+  // TODO: add a generic interface
+  let eventBus: any;
+
+  beforeEach(() => {
+    eventBus = new EventEmitter();
+  });
+
+
   it('books a free room in the given period', async () => {
     // given
     const bookedRooms = [];
 
-    const sut = commandHandlerWith(bookedRooms);
+    const sut = commandHandlerWith(bookedRooms, eventBus);
 
     const booking = {
       clientId: ANY_CLIENT_ID,
@@ -43,8 +55,8 @@ describe('Book a room use case', () => {
     // given
     const bookedRooms = [];
 
-    const commandHandler = commandHandlerWith(bookedRooms);
-    const queryHandler = queryHandlerWith(bookedRooms);
+    const commandHandler = commandHandlerWith(bookedRooms, eventBus);
+    const queryHandler = queryHandlerWith(bookedRooms, eventBus);
 
     const booking = {
       clientId: ANY_CLIENT_ID,
@@ -67,7 +79,10 @@ describe('Book a room use case', () => {
   });
 });
 
-function commandHandlerWith(bookedRooms: Booking[]): BookingCommandHandler {
+function commandHandlerWith(
+  bookedRooms: Booking[],
+  eventBus: any
+): BookingCommandHandler {
   class InMemoryWriteRegistry implements BookingWriteRegistry {
     constructor(private readonly bookings: Booking[]) {}
 
@@ -77,23 +92,39 @@ function commandHandlerWith(bookedRooms: Booking[]): BookingCommandHandler {
       return Promise.resolve();
     }
     getRoomBookings(roomName: string): Promise<Booking[]> {
-      return Promise.resolve(bookedRooms.filter(b => b.roomName === roomName));
+      return Promise
+        .resolve(this.bookings.filter(b => b.roomName === roomName));
     }
   }
 
   const writeRegistry = new InMemoryWriteRegistry([...bookedRooms]);
 
-  return new BookingCommandHandler(writeRegistry, findFreeRoom);
+  return new BookingCommandHandler(writeRegistry, findFreeRoom, eventBus);
 }
 
-function queryHandlerWith(bookedRooms: Booking[]): BookingQueryHandler {
-  const readRegistry: BookingReadRegistry = {
-    getAll() {
-      return Promise.resolve([...bookedRooms]);
-    },
-  };
+function queryHandlerWith(
+  bookedRooms: Booking[],
+  eventBus: any
+): BookingQueryHandler {
+  class InMemoryReadRegistry implements BookingReadRegistry {
+    constructor(private readonly bookings: BookingReadModel[]) {}
 
-  const sut = new BookingQueryHandler(readRegistry, findFreeRoom);
+    getAll(): Promise<BookingReadModel[]> {
+      return Promise.resolve(this.bookings);
+    }
+
+    add(booking: BookingReadModel): Promise<void> {
+      this.bookings.push(booking);
+
+      return Promise.resolve();
+    }
+  }
+
+  const readRegistry: BookingReadRegistry = new InMemoryReadRegistry(
+    bookedRooms
+  );
+
+  const sut = new BookingQueryHandler(readRegistry, findFreeRoom, eventBus);
 
   return sut;
 }

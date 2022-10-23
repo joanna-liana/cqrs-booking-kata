@@ -15,7 +15,8 @@ export interface BookingWriteRegistry {
 export class BookingCommandHandler {
   constructor(
     private readonly writeRegistry: BookingWriteRegistry,
-    private readonly findFreeRoom: FindFreeRoom
+    private readonly findFreeRoom: FindFreeRoom,
+    private readonly eventBus: any,
   ) {}
 
   async bookARoom(booking: Booking): Promise<void> {
@@ -38,6 +39,7 @@ export class BookingCommandHandler {
       throw new Error('The room is unavailable in the requested period');
     }
 
-    return this.writeRegistry.makeABooking(booking);
+    await this.writeRegistry.makeABooking(booking);
+    await this.eventBus.emit('ROOM_BOOKED', booking);
   }
 }
