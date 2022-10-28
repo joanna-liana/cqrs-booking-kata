@@ -4,10 +4,10 @@ import {
   ExistingBooking,
   findFreeRoom,
   Room
-} from '../src/freeRoomFinder';
+} from '../../src/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
-} from '../src/rooms';
+} from '../../src/rooms';
 
 describe('Free room finder', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);

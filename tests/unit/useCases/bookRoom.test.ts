@@ -2,22 +2,24 @@
 import {
   BookingCommandHandler,
   BookingWriteModel
-} from '../../src/commands/BookingCommandHandler';
+} from '../../../src/commands/BookingCommandHandler';
 import {
   InMemoryWriteRegistry
-} from '../../src/commands/InMemoryWriteRegistry';
-import { EventBus } from '../../src/events/EventBus';
-import { InMemoryEventBus } from '../../src/events/InMemoryEventBus';
-import { findFreeRoom } from '../../src/freeRoomFinder';
+} from '../../../src/commands/InMemoryWriteRegistry';
+import { EventBus } from '../../../src/events/EventBus';
+import { InMemoryEventBus } from '../../../src/events/InMemoryEventBus';
+import { findFreeRoom } from '../../../src/freeRoomFinder';
 import {
   BookingQueryHandler,
   BookingReadModel,
   BookingReadRegistry,
-} from '../../src/queries/BookingQueryHandler';
-import { InMemoryReadRegistry } from '../../src/queries/InMemoryReadRegistry';
+} from '../../../src/queries/BookingQueryHandler';
+import {
+  InMemoryReadRegistry
+} from '../../../src/queries/InMemoryReadRegistry';
 import {
   ROOM_ONE_NAME,
-} from '../../src/rooms';
+} from '../../../src/rooms';
 
 describe('Book a room use case', () => {
   const ANY_CLIENT_ID = 'client1';
@@ -35,7 +37,7 @@ describe('Book a room use case', () => {
 
   it('books a free room in the given period', async () => {
     // given
-    const bookedRooms = [];
+    const bookedRooms: BookingWriteModel[] = [];
 
     const sut = commandHandlerWith(bookedRooms, eventBus);
 
@@ -55,7 +57,7 @@ describe('Book a room use case', () => {
 
   it('ensures the booked room will not be listed as available', async () => {
     // given
-    const bookedRooms = [];
+    const bookedRooms: BookingWriteModel[] = [];
 
     const commandHandler = commandHandlerWith(bookedRooms, eventBus);
     const queryHandler = queryHandlerWith(bookedRooms, eventBus);
