@@ -1,4 +1,5 @@
 import { EventBus } from '../events/EventBus';
+import { Events } from '../events/Events';
 import { InMemoryEventBus } from '../events/InMemoryEventBus';
 import { FindFreeRoom } from '../freeRoomFinder';
 
@@ -26,7 +27,7 @@ export class BookingQueryHandler {
       BookingReadModel
     > = new InMemoryEventBus(),
   ) {
-    this.eventBus.on('ROOM_BOOKED', async (booking) => {
+    this.eventBus.on(Events.RoomBooked, async (booking) => {
       await this.registry.add(booking);
     });
   }

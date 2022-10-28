@@ -1,4 +1,5 @@
 import { EventBus } from './events/EventBus';
+import { Events } from './events/Events';
 import { FindFreeRoom } from './freeRoomFinder';
 
 
@@ -41,6 +42,6 @@ export class BookingCommandHandler {
     }
 
     await this.writeRegistry.makeABooking(booking);
-    await this.eventBus.emit('ROOM_BOOKED', booking);
+    await this.eventBus.emit(Events.RoomBooked, booking);
   }
 }
