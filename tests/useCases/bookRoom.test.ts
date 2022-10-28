@@ -1,13 +1,12 @@
 
 import {
-  Booking,
   BookingCommandHandler,
+  BookingWriteModel,
   BookingWriteRegistry
 } from '../../src/BookingCommandHandler';
 import {
-  // TODO: refactor both read and write models
-  Booking as BookingReadModel,
   BookingQueryHandler,
+  BookingReadModel,
   BookingReadRegistry,
 } from '../../src/BookingQueryHandler';
 import { EventBus } from '../../src/events/EventBus';
@@ -80,18 +79,18 @@ describe('Book a room use case', () => {
 });
 
 function commandHandlerWith(
-  bookedRooms: Booking[],
+  bookedRooms: BookingWriteModel[],
   eventBus: EventBus
 ): BookingCommandHandler {
   class InMemoryWriteRegistry implements BookingWriteRegistry {
-    constructor(private readonly bookings: Booking[]) {}
+    constructor(private readonly bookings: BookingWriteModel[]) {}
 
-    makeABooking(booking: Booking): Promise<void> {
+    makeABooking(booking: BookingWriteModel): Promise<void> {
       this.bookings.push(booking);
 
       return Promise.resolve();
     }
-    getRoomBookings(roomName: string): Promise<Booking[]> {
+    getRoomBookings(roomName: string): Promise<BookingWriteModel[]> {
       return Promise
         .resolve(this.bookings.filter(b => b.roomName === roomName));
     }
@@ -103,7 +102,7 @@ function commandHandlerWith(
 }
 
 function queryHandlerWith(
-  bookedRooms: Booking[],
+  bookedRooms: BookingWriteModel[],
   eventBus: any
 ): BookingQueryHandler {
   class InMemoryReadRegistry implements BookingReadRegistry {

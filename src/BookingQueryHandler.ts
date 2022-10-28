@@ -6,7 +6,7 @@ export interface Room {
   name: string;
 }
 
-export interface Booking {
+export interface BookingReadModel {
   clientId: string;
   roomName: string;
   arrivalDate: Date;
@@ -14,8 +14,8 @@ export interface Booking {
 }
 
 export interface BookingReadRegistry {
-  getAll(): Promise<Booking[]>;
-  add(booking: Booking): Promise<void>;
+  getAll(): Promise<BookingReadModel[]>;
+  add(booking: BookingReadModel): Promise<void>;
 }
 
 export class BookingQueryHandler {
@@ -24,7 +24,7 @@ export class BookingQueryHandler {
     private readonly findFreeRoom: FindFreeRoom,
     private readonly eventBus: any = new EventEmitter(),
   ) {
-    this.eventBus.on('ROOM_BOOKED', async (booking: Booking) => {
+    this.eventBus.on('ROOM_BOOKED', async (booking: BookingReadModel) => {
       await this.registry.add(booking);
     });
   }

@@ -1,6 +1,6 @@
 import {
-  Booking,
   BookingQueryHandler,
+  BookingReadModel,
   BookingReadRegistry,
   Room
 } from '../../src/BookingQueryHandler';
@@ -19,7 +19,7 @@ describe('List free rooms use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
-  function bookedRoom(roomName: string): Booking {
+  function bookedRoom(roomName: string): BookingReadModel {
     return ({
       roomName,
       arrivalDate: ARRIVAL_DATE,
@@ -51,7 +51,7 @@ describe('List free rooms use case', () => {
 
   it('given no bookings, it lists all the rooms', async () => {
     // given
-    const bookedRooms: Booking[] = [];
+    const bookedRooms: BookingReadModel[] = [];
 
     const sut = sutWith(bookedRooms);
 
@@ -96,11 +96,14 @@ describe('List free rooms use case', () => {
   });
 });
 
-function sutWith(bookedRooms: Booking[]): BookingQueryHandler {
+function sutWith(bookedRooms: BookingReadModel[]): BookingQueryHandler {
   const readRegistry: BookingReadRegistry = {
     getAll() {
       return Promise.resolve(bookedRooms);
     },
+    add(): Promise<void> {
+      throw new Error('Function not implemented.');
+    }
   };
 
   const sut = new BookingQueryHandler(readRegistry, findFreeRoom);

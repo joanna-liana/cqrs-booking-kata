@@ -1,7 +1,7 @@
 import { FindFreeRoom } from './freeRoomFinder';
 
 
-export interface Booking {
+export interface BookingWriteModel {
   clientId: string;
   roomName: string;
   arrivalDate: Date;
@@ -9,8 +9,8 @@ export interface Booking {
 }
 
 export interface BookingWriteRegistry {
-  makeABooking(booking: Booking): Promise<void>;
-  getRoomBookings(roomName: string): Promise<Booking[]>;
+  makeABooking(booking: BookingWriteModel): Promise<void>;
+  getRoomBookings(roomName: string): Promise<BookingWriteModel[]>;
 }
 export class BookingCommandHandler {
   constructor(
@@ -19,7 +19,7 @@ export class BookingCommandHandler {
     private readonly eventBus: any,
   ) {}
 
-  async bookARoom(booking: Booking): Promise<void> {
+  async bookARoom(booking: BookingWriteModel): Promise<void> {
     const roomBookings = await this.writeRegistry
       .getRoomBookings(booking.roomName);
 
