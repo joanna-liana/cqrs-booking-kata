@@ -1,9 +1,11 @@
 
 import {
   BookingCommandHandler,
-  BookingWriteModel,
-  BookingWriteRegistry
-} from '../../src/BookingCommandHandler';
+  BookingWriteModel
+} from '../../src/commands/BookingCommandHandler';
+import {
+  InMemoryWriteRegistry
+} from '../../src/commands/InMemoryWriteRegistry';
 import { EventBus } from '../../src/events/EventBus';
 import { InMemoryEventBus } from '../../src/events/InMemoryEventBus';
 import { findFreeRoom } from '../../src/freeRoomFinder';
@@ -83,20 +85,6 @@ function commandHandlerWith(
   bookedRooms: BookingWriteModel[],
   eventBus: EventBus<BookingWriteModel>
 ): BookingCommandHandler {
-  class InMemoryWriteRegistry implements BookingWriteRegistry {
-    constructor(private readonly bookings: BookingWriteModel[]) {}
-
-    makeABooking(booking: BookingWriteModel): Promise<void> {
-      this.bookings.push(booking);
-
-      return Promise.resolve();
-    }
-    getRoomBookings(roomName: string): Promise<BookingWriteModel[]> {
-      return Promise
-        .resolve(this.bookings.filter(b => b.roomName === roomName));
-    }
-  }
-
   const writeRegistry = new InMemoryWriteRegistry([...bookedRooms]);
 
   return new BookingCommandHandler(writeRegistry, findFreeRoom, eventBus);

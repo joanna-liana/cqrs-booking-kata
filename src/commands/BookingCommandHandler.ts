@@ -1,6 +1,6 @@
-import { EventBus } from './events/EventBus';
-import { Events } from './events/Events';
-import { FindFreeRoom } from './freeRoomFinder';
+import { EventBus } from '../events/EventBus';
+import { Events } from '../events/Events';
+import { FindFreeRoom } from '../freeRoomFinder';
 
 
 export interface BookingWriteModel {
