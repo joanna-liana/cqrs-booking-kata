@@ -1,12 +1,13 @@
 import {
+  findFreeRoom,
+} from '../../src/freeRoomFinder';
+import {
   BookingQueryHandler,
   BookingReadModel,
   BookingReadRegistry,
   Room
-} from '../../src/BookingQueryHandler';
-import {
-  findFreeRoom,
-} from '../../src/freeRoomFinder';
+} from '../../src/queries/BookingQueryHandler';
+import { InMemoryReadRegistry } from '../../src/queries/InMemoryReadRegistry';
 import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
@@ -97,16 +98,9 @@ describe('List free rooms use case', () => {
 });
 
 function sutWith(bookedRooms: BookingReadModel[]): BookingQueryHandler {
-  const readRegistry: BookingReadRegistry = {
-    getAll() {
-      return Promise.resolve(bookedRooms);
-    },
-    add(): Promise<void> {
-      throw new Error('Function not implemented.');
-    }
-  };
+  const readRegistry: BookingReadRegistry = new InMemoryReadRegistry(
+    bookedRooms
+  );
 
-  const sut = new BookingQueryHandler(readRegistry, findFreeRoom);
-
-  return sut;
+  return new BookingQueryHandler(readRegistry, findFreeRoom);
 }

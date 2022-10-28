@@ -4,14 +4,15 @@ import {
   BookingWriteModel,
   BookingWriteRegistry
 } from '../../src/BookingCommandHandler';
+import { EventBus } from '../../src/events/EventBus';
+import { InMemoryEventBus } from '../../src/events/InMemoryEventBus';
+import { findFreeRoom } from '../../src/freeRoomFinder';
 import {
   BookingQueryHandler,
   BookingReadModel,
   BookingReadRegistry,
-} from '../../src/BookingQueryHandler';
-import { EventBus } from '../../src/events/EventBus';
-import { InMemoryEventBus } from '../../src/events/InMemoryEventBus';
-import { findFreeRoom } from '../../src/freeRoomFinder';
+} from '../../src/queries/BookingQueryHandler';
+import { InMemoryReadRegistry } from '../../src/queries/InMemoryReadRegistry';
 import {
   ROOM_ONE_NAME,
 } from '../../src/rooms';
@@ -105,25 +106,9 @@ function queryHandlerWith(
   bookedRooms: BookingWriteModel[],
   eventBus: EventBus<BookingReadModel>
 ): BookingQueryHandler {
-  class InMemoryReadRegistry implements BookingReadRegistry {
-    constructor(private readonly bookings: BookingReadModel[]) {}
-
-    getAll(): Promise<BookingReadModel[]> {
-      return Promise.resolve(this.bookings);
-    }
-
-    add(booking: BookingReadModel): Promise<void> {
-      this.bookings.push(booking);
-
-      return Promise.resolve();
-    }
-  }
-
   const readRegistry: BookingReadRegistry = new InMemoryReadRegistry(
     bookedRooms
   );
 
-  const sut = new BookingQueryHandler(readRegistry, findFreeRoom, eventBus);
-
-  return sut;
+  return new BookingQueryHandler(readRegistry, findFreeRoom, eventBus);
 }

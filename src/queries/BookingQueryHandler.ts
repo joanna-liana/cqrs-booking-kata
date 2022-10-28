@@ -1,6 +1,6 @@
-import { EventBus } from './events/EventBus';
-import { InMemoryEventBus } from './events/InMemoryEventBus';
-import { FindFreeRoom } from './freeRoomFinder';
+import { EventBus } from '../events/EventBus';
+import { InMemoryEventBus } from '../events/InMemoryEventBus';
+import { FindFreeRoom } from '../freeRoomFinder';
 
 export interface Room {
   name: string;
