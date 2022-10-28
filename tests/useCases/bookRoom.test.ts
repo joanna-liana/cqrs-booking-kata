@@ -23,7 +23,7 @@ describe('Book a room use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
-  let eventBus: EventBus;
+  let eventBus: EventBus<BookingReadModel | BookingWriteModel>;
 
   beforeEach(() => {
     eventBus = new InMemoryEventBus();
@@ -80,7 +80,7 @@ describe('Book a room use case', () => {
 
 function commandHandlerWith(
   bookedRooms: BookingWriteModel[],
-  eventBus: EventBus
+  eventBus: EventBus<BookingWriteModel>
 ): BookingCommandHandler {
   class InMemoryWriteRegistry implements BookingWriteRegistry {
     constructor(private readonly bookings: BookingWriteModel[]) {}
@@ -103,7 +103,7 @@ function commandHandlerWith(
 
 function queryHandlerWith(
   bookedRooms: BookingWriteModel[],
-  eventBus: any
+  eventBus: EventBus<BookingReadModel>
 ): BookingQueryHandler {
   class InMemoryReadRegistry implements BookingReadRegistry {
     constructor(private readonly bookings: BookingReadModel[]) {}

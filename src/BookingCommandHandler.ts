@@ -1,3 +1,4 @@
+import { EventBus } from './events/EventBus';
 import { FindFreeRoom } from './freeRoomFinder';
 
 
@@ -16,7 +17,7 @@ export class BookingCommandHandler {
   constructor(
     private readonly writeRegistry: BookingWriteRegistry,
     private readonly findFreeRoom: FindFreeRoom,
-    private readonly eventBus: any,
+    private readonly eventBus: EventBus<BookingWriteModel>,
   ) {}
 
   async bookARoom(booking: BookingWriteModel): Promise<void> {

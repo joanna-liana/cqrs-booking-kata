@@ -1,5 +1,5 @@
-import { EventEmitter } from 'events';
-
+import { EventBus } from './events/EventBus';
+import { InMemoryEventBus } from './events/InMemoryEventBus';
 import { FindFreeRoom } from './freeRoomFinder';
 
 export interface Room {
@@ -22,9 +22,11 @@ export class BookingQueryHandler {
   constructor(
     private readonly registry: BookingReadRegistry,
     private readonly findFreeRoom: FindFreeRoom,
-    private readonly eventBus: any = new EventEmitter(),
+    private readonly eventBus: EventBus<
+      BookingReadModel
+    > = new InMemoryEventBus(),
   ) {
-    this.eventBus.on('ROOM_BOOKED', async (booking: BookingReadModel) => {
+    this.eventBus.on('ROOM_BOOKED', async (booking) => {
       await this.registry.add(booking);
     });
   }

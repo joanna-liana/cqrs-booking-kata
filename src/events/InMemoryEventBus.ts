@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import { EventBus, EventHandler } from './EventBus';
 
 
-export class InMemoryEventBus implements EventBus {
+export class InMemoryEventBus<TPayload> implements EventBus<TPayload> {
   constructor(private readonly eventEmitter = new EventEmitter()) {}
 
   emit(eventName: string, payload: unknown): Promise<void> {
@@ -12,7 +12,7 @@ export class InMemoryEventBus implements EventBus {
     return Promise.resolve();
   }
 
-  on(eventName: string, handler: EventHandler): Promise<void> {
+  on(eventName: string, handler: EventHandler<TPayload>): Promise<void> {
     this.eventEmitter.on(eventName, handler);
 
     return Promise.resolve();
