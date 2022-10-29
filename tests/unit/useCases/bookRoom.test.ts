@@ -2,24 +2,26 @@
 import {
   BookingCommandHandler,
   BookingWriteModel
-} from '../../../src/commands/BookingCommandHandler';
+} from '../../../src/bookings/commands/BookingCommandHandler';
 import {
   InMemoryWriteRegistry
-} from '../../../src/commands/InMemoryWriteRegistry';
-import { EventBus } from '../../../src/events/EventBus';
-import { InMemoryEventBus } from '../../../src/events/InMemoryEventBus';
-import { findFreeRoom } from '../../../src/freeRoomFinder';
+} from '../../../src/bookings/commands/InMemoryWriteRegistry';
+import { EventBus } from '../../../src/bookings/events/EventBus';
+import {
+  InMemoryEventBus
+} from '../../../src/bookings/events/InMemoryEventBus';
+import { findFreeRoom } from '../../../src/bookings/freeRoomFinder';
 import {
   BookingQueryHandler,
   BookingReadModel,
   BookingReadRegistry,
-} from '../../../src/queries/BookingQueryHandler';
+} from '../../../src/bookings/queries/BookingQueryHandler';
 import {
   InMemoryReadRegistry
-} from '../../../src/queries/InMemoryReadRegistry';
+} from '../../../src/bookings/queries/InMemoryReadRegistry';
 import {
   ROOM_ONE_NAME,
-} from '../../../src/rooms';
+} from '../../../src/bookings/rooms';
 
 describe('Book a room use case', () => {
   const ANY_CLIENT_ID = 'client1';

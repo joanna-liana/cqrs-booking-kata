@@ -1,20 +1,20 @@
 import {
   findFreeRoom,
-} from '../../../src/freeRoomFinder';
+} from '../../../src/bookings/freeRoomFinder';
 import {
   BookingQueryHandler,
   BookingReadModel,
   BookingReadRegistry,
   Room
-} from '../../../src/queries/BookingQueryHandler';
+} from '../../../src/bookings/queries/BookingQueryHandler';
 import {
   InMemoryReadRegistry
-} from '../../../src/queries/InMemoryReadRegistry';
+} from '../../../src/bookings/queries/InMemoryReadRegistry';
 import {
   ROOM_ONE_NAME,
   ROOM_THREE_NAME,
   ROOM_TWO_NAME,
-} from '../../../src/rooms';
+} from '../../../src/bookings/rooms';
 
 describe('List free rooms use case', () => {
   const ANY_CLIENT_ID = 'client1';
