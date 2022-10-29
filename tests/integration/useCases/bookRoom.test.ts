@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Response } from 'express';
 import { Server } from 'http';
 
 import { getApp } from '../../../src/app';
@@ -40,12 +41,18 @@ describe('Book a room use case', () => {
 
 
     async function bookRoom(): Promise<Response> {
-      return axios.post(TEST_BASE_URL, {
-        clientId: ANY_CLIENT_ID,
-        room: ROOM_TO_BOOK_NAME,
-        arrival: ARRIVAL_DATE,
-        departure: DEPARTURE_DATE
-      });
+      return axios.post(
+        TEST_BASE_URL,
+        {
+          clientId: ANY_CLIENT_ID,
+          room: ROOM_TO_BOOK_NAME,
+          arrival: ARRIVAL_DATE,
+          departure: DEPARTURE_DATE
+        },
+        {
+          validateStatus: _status => true
+        }
+      );
     }
   });
 });
