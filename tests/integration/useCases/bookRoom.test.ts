@@ -39,7 +39,6 @@ describe('Book a room use case', () => {
     const { status: duplicatedBookingStatus } = await bookRoom();
     expect(duplicatedBookingStatus).toBe(409);
 
-
     async function bookRoom(): Promise<Response> {
       return axios.post(
         TEST_BASE_URL,

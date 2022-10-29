@@ -1,5 +1,5 @@
 import express,
-{ Application, json, Request, Response }
+{ Application, json, NextFunction, Request, Response }
   from 'express';
 
 import {
@@ -9,6 +9,7 @@ import {
 import {
   InMemoryWriteRegistry
 } from './bookings/commands/InMemoryWriteRegistry';
+import { ApplicationError } from './bookings/errors/ApplicationError';
 import { InMemoryEventBus } from './bookings/events/InMemoryEventBus';
 import { findFreeRoom } from './bookings/freeRoomFinder';
 
@@ -51,9 +52,17 @@ export const getApp = (): Application => {
     res.status(404).send(`Not found ${req.path}`);
   });
 
-  app.use((err: unknown, _req: Request, res: Response) => {
-    console.log(err);
-    res.status(500).send(err);
+  app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+    if (err instanceof ApplicationError) {
+      return res.status(err.status).json({
+        error: err.name,
+        message: err.message,
+      }).send();
+    }
+
+    console.error(err);
+
+    res.status(500).send();
   });
 
   return app;

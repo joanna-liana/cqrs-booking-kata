@@ -1,3 +1,4 @@
+import { RoomUnavailableError } from '../errors/RoomUnavailableError';
 import { EventBus } from '../events/EventBus';
 import { Events } from '../events/Events';
 import { FindFreeRoom } from '../freeRoomFinder';
@@ -38,7 +39,7 @@ export class BookingCommandHandler {
       .length;
 
     if (!isRoomFree) {
-      throw new Error('The room is unavailable in the requested period');
+      throw new RoomUnavailableError();
     }
 
     await this.writeRegistry.makeABooking(booking);
