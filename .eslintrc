@@ -3,34 +3,22 @@
   "env": {
     "node": true
   },
-  "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint",
-    "simple-import-sort"
-  ],
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "eslint:recommended"
   ],
   "rules": {
     "quotes": [
       "error",
       "single"
     ],
-    "@typescript-eslint/explicit-function-return-type": [
-      "error"
-    ],
     "semi": "error",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "@typescript-eslint/member-delimiter-style": "error",
     "indent": ["error", 2],
     "max-len": ["error", 80],
     "function-call-argument-newline": ["error", "consistent"],
     "function-paren-newline": ["error", "multiline-arguments"],
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "object-curly-newline": [
       "error",
       {
@@ -40,5 +28,49 @@
       }
     ],
     "newline-before-return": "error"
-  }
+  },
+  "parser": "@babel/eslint-parser",
+  "overrides": [
+    {
+      "files": "**/*.ts",
+      "parser": "@typescript-eslint/parser",
+      "plugins": [
+        "@typescript-eslint",
+        "simple-import-sort"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "quotes": [
+          "error",
+          "single"
+        ],
+        "@typescript-eslint/explicit-function-return-type": [
+          "error"
+        ],
+        "semi": "error",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "@typescript-eslint/member-delimiter-style": "error",
+        "indent": ["error", 2],
+        "max-len": ["error", 80],
+        "function-call-argument-newline": ["error", "consistent"],
+        "function-paren-newline": ["error", "multiline-arguments"],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "object-curly-newline": [
+          "error",
+          {
+            "ObjectExpression": "always",
+            "ObjectPattern": { "multiline": true },
+            "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+          }
+        ],
+        "newline-before-return": "error"
+      }
+    }
+  ]
 }
