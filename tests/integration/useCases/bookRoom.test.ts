@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { Response } from 'express';
 import { Server } from 'http';
+import { AddressInfo } from 'net';
 
 import { getApp } from '../../../src/app';
 import { ROOM_ONE_NAME } from '../../../src/bookings/rooms';
 
 describe('Book a room use case', () => {
   let server: Server;
-  const PORT = 3335;
+  let testUrl: string;
 
   const ANY_CLIENT_ID = 'client1';
   const ROOM_TO_BOOK_NAME = ROOM_ONE_NAME;
@@ -18,7 +19,10 @@ describe('Book a room use case', () => {
   beforeAll(() => {
     const app = getApp();
 
-    server = app.listen(PORT);
+    server = app.listen();
+    const { port } = (server.address() as AddressInfo);
+
+    testUrl = `http://localhost:${port}/bookings`;
   });
 
   afterAll(() => {
@@ -26,10 +30,6 @@ describe('Book a room use case', () => {
   });
 
   it('books a free room in the given period', async () => {
-    // given
-    // TODO: app started on a random port, once, before all specs
-    const TEST_BASE_URL = `http://localhost:${PORT}/bookings`;
-
     // when
     const { status } = await bookRoom();
 
@@ -41,7 +41,7 @@ describe('Book a room use case', () => {
 
     async function bookRoom(): Promise<Response> {
       return axios.post(
-        TEST_BASE_URL,
+        testUrl,
         {
           clientId: ANY_CLIENT_ID,
           room: ROOM_TO_BOOK_NAME,
