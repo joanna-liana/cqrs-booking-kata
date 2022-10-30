@@ -6,4 +6,5 @@ module.exports = {
   testEnvironment: 'node',
   rootDir: 'tests/integration',
   collectCoverageFrom: ['**/*.ts', '!demo.ts'],
+  setupFilesAfterEnv: ['<rootDir>/hooks/afterEnv.ts']
 };
