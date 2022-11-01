@@ -16,6 +16,21 @@ describe('Book a room use case', () => {
     testUrl = `${global.baseTestUrl}/bookings`;
   });
 
+  async function bookRoom(): Promise<Response> {
+    return axios.post(
+      testUrl,
+      {
+        clientId: ANY_CLIENT_ID,
+        room: ROOM_TO_BOOK_NAME,
+        arrival: ARRIVAL_DATE,
+        departure: DEPARTURE_DATE
+      },
+      {
+        validateStatus: _status => true
+      }
+    );
+  }
+
   it('books a free room in the given period', async () => {
     // when
     const { status } = await bookRoom();
@@ -25,20 +40,5 @@ describe('Book a room use case', () => {
 
     const { status: duplicatedBookingStatus } = await bookRoom();
     expect(duplicatedBookingStatus).toBe(409);
-
-    async function bookRoom(): Promise<Response> {
-      return axios.post(
-        testUrl,
-        {
-          clientId: ANY_CLIENT_ID,
-          room: ROOM_TO_BOOK_NAME,
-          arrival: ARRIVAL_DATE,
-          departure: DEPARTURE_DATE
-        },
-        {
-          validateStatus: _status => true
-        }
-      );
-    }
   });
 });

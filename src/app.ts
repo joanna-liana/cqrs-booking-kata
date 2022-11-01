@@ -12,6 +12,8 @@ import {
 import { ApplicationError } from './bookings/errors/ApplicationError';
 import { InMemoryEventBus } from './bookings/events/InMemoryEventBus';
 import { findFreeRoom } from './bookings/freeRoomFinder';
+import { BookingQueryHandler } from './bookings/queries/BookingQueryHandler';
+import { InMemoryReadRegistry } from './bookings/queries/InMemoryReadRegistry';
 
 export const getApp = (): Application => {
   const app = express();
@@ -24,6 +26,14 @@ export const getApp = (): Application => {
 
   const commandHandler = new BookingCommandHandler(
     writeRegistry,
+    findFreeRoom,
+    eventBus
+  );
+
+  const readRegistry = new InMemoryReadRegistry([]);
+
+  const queryHandler = new BookingQueryHandler(
+    readRegistry,
     findFreeRoom,
     eventBus
   );
@@ -42,6 +52,26 @@ export const getApp = (): Application => {
         });
 
         res.status(201).send();
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
+
+  app.get(
+    '/bookings',
+    async (req, res, next) => {
+      try {
+        const { arrival, departure } = req.query;
+
+        const data = await queryHandler.freeRooms(
+          new Date(arrival as string),
+          new Date(departure as string)
+        );
+
+        res.status(200).json({
+          data
+        });
       } catch (err) {
         next(err);
       }
