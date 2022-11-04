@@ -17,8 +17,6 @@ import {
 } from '../../../src/bookings/rooms';
 
 describe('List free rooms use case', () => {
-  const ANY_CLIENT_ID = 'client1';
-
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
@@ -27,7 +25,6 @@ describe('List free rooms use case', () => {
       roomName,
       arrivalDate: ARRIVAL_DATE,
       departureDate: DEPARTURE_DATE,
-      clientId: ANY_CLIENT_ID
     });
   }
 

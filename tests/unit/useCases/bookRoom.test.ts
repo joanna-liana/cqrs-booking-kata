@@ -30,7 +30,7 @@ describe('Book a room use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
-  let eventBus: EventBus<BookingReadModel | BookingWriteModel>;
+  let eventBus: EventBus<BookingReadModel & BookingWriteModel>;
 
   beforeEach(() => {
     eventBus = new InMemoryEventBus();

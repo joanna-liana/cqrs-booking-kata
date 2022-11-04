@@ -8,7 +8,6 @@ export interface Room {
 }
 
 export interface BookingReadModel {
-  clientId: string;
   roomName: string;
   arrivalDate: Date;
   departureDate: Date;
