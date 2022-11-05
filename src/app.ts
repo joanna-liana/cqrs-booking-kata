@@ -14,7 +14,8 @@ import { ApplicationError } from './bookings/errors/ApplicationError';
 import { InMemoryEventBus } from './bookings/events/InMemoryEventBus';
 import { findFreeRoom } from './bookings/freeRoomFinder';
 import { BookingQueryHandler } from './bookings/queries/BookingQueryHandler';
-import { InMemoryReadRegistry } from './bookings/queries/InMemoryReadRegistry';
+import { BookingRead } from './bookings/queries/BookingRead.entity';
+import { PostgresReadRegistry } from './bookings/queries/PostgresReadRegistry';
 import { setUpOrm } from './db';
 
 export const getApp = async (): Promise<Application> => {
@@ -37,7 +38,9 @@ export const getApp = async (): Promise<Application> => {
     eventBus
   );
 
-  const readRegistry = new InMemoryReadRegistry([]);
+  const readRegistry = new PostgresReadRegistry(
+    orm.em.fork().getRepository(BookingRead)
+  );
 
   const queryHandler = new BookingQueryHandler(
     readRegistry,
