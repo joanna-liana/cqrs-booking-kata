@@ -1,7 +1,3 @@
-import { MikroORM } from '@mikro-orm/core';
-import type {
-  PostgreSqlDriver
-} from '@mikro-orm/postgresql'; // or any other driver package
 import express,
 { Application, json, NextFunction, Request, Response }
   from 'express';
@@ -10,16 +6,16 @@ import {
   BookingCommandHandler,
   BookingWriteModel
 } from './bookings/commands/BookingCommandHandler';
+import { BookingWrite } from './bookings/commands/BookingWrite.entity';
 import {
-  InMemoryWriteRegistry
-} from './bookings/commands/InMemoryWriteRegistry';
+  PostgresWriteRegistry
+} from './bookings/commands/PostgresWriteRegistry';
 import { ApplicationError } from './bookings/errors/ApplicationError';
 import { InMemoryEventBus } from './bookings/events/InMemoryEventBus';
 import { findFreeRoom } from './bookings/freeRoomFinder';
 import { BookingQueryHandler } from './bookings/queries/BookingQueryHandler';
 import { InMemoryReadRegistry } from './bookings/queries/InMemoryReadRegistry';
-
-
+import { setUpOrm } from './db';
 
 export const getApp = async (): Promise<Application> => {
   const app = express();
@@ -27,17 +23,13 @@ export const getApp = async (): Promise<Application> => {
   app.set('trust proxy', 1);
   app.use(json());
 
-  const writeRegistry = new InMemoryWriteRegistry([]);
+  const orm = await setUpOrm();
+
+  const writeRegistry = new PostgresWriteRegistry(
+    orm.em.fork().getRepository(BookingWrite)
+  );
+
   const eventBus = new InMemoryEventBus<BookingWriteModel>();
-
-  const orm = await MikroORM.init<PostgreSqlDriver>({
-    entities: ['./build/**/*.entity.js'],
-    entitiesTs: ['./src/**/*.entity.ts'],
-    dbName: 'cqrs_booking_kata',
-    type: 'postgresql',
-  });
-
-  console.log(orm.em); // access EntityManager via `em` property
 
   const commandHandler = new BookingCommandHandler(
     writeRegistry,

@@ -3,6 +3,7 @@ import { promisify } from 'util';
 
 import { getApp } from '../../../src/app';
 
+// TODO: create and drop a test db every time
 beforeAll(async () => {
   const app = await getApp();
 
