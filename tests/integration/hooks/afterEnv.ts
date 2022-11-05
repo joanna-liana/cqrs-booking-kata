@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { getApp } from '../../../src/app';
 
 beforeAll(async () => {
-  const app = getApp();
+  const app = await getApp();
 
   global.server = app.listen();
 

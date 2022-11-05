@@ -1,7 +1,7 @@
 import { getApp } from './app';
 
-const bootstrap = (port = 3000): void => {
-  getApp().listen(port, () =>
+const bootstrap = async (port = 3000): Promise<void> => {
+  (await getApp()).listen(port, () =>
     console.log(`App listening on port ${port}!`));
 };
 
