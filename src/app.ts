@@ -1,3 +1,4 @@
+import { MikroORM } from '@mikro-orm/postgresql';
 import express,
 { Application, json, NextFunction, Request, Response }
   from 'express';
@@ -26,27 +27,7 @@ export const getApp = async (): Promise<Application> => {
 
   const orm = await setUpOrm();
 
-  const writeRegistry = new PostgresWriteRegistry(
-    orm.em.fork().getRepository(BookingWrite)
-  );
-
-  const eventBus = new InMemoryEventBus<BookingWriteModel>();
-
-  const commandHandler = new BookingCommandHandler(
-    writeRegistry,
-    findFreeRoom,
-    eventBus
-  );
-
-  const readRegistry = new PostgresReadRegistry(
-    orm.em.fork().getRepository(BookingRead)
-  );
-
-  const queryHandler = new BookingQueryHandler(
-    readRegistry,
-    findFreeRoom,
-    eventBus
-  );
+  const { commandHandler, queryHandler } = createBookingModule(orm);
 
   app.post(
     '/bookings',
@@ -107,3 +88,36 @@ export const getApp = async (): Promise<Application> => {
 
   return app;
 };
+
+interface BookingModule {
+  commandHandler: BookingCommandHandler;
+  queryHandler: BookingQueryHandler;
+}
+
+function createBookingModule(orm: MikroORM): BookingModule {
+  const writeRegistry = new PostgresWriteRegistry(
+    orm.em.fork().getRepository(BookingWrite)
+  );
+
+  const eventBus = new InMemoryEventBus<BookingWriteModel>();
+
+  const commandHandler = new BookingCommandHandler(
+    writeRegistry,
+    findFreeRoom,
+    eventBus
+  );
+
+  const readRegistry = new PostgresReadRegistry(
+    orm.em.fork().getRepository(BookingRead)
+  );
+
+  const queryHandler = new BookingQueryHandler(
+    readRegistry,
+    findFreeRoom,
+    eventBus
+  );
+
+  return {
+    commandHandler, queryHandler
+  };
+}
