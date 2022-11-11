@@ -2,11 +2,11 @@ import { Application } from 'express';
 import { AddressInfo } from 'net';
 import { promisify } from 'util';
 
-import { getApp } from '../../../src/app';
+import { bootstrapApp } from '../../../src/app';
 
 beforeAll(async () => {
   // TODO: use a test database name
-  const { app, orm } = await getApp();
+  const { app, orm } = await bootstrapApp();
 
   await orm
     .getSchemaGenerator()

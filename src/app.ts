@@ -12,7 +12,7 @@ interface App {
   orm: MikroORM;
 }
 
-export const getApp = async (): Promise<App> => {
+export const bootstrapApp = async (): Promise<App> => {
   const app = express();
 
   app.set('trust proxy', 1);
