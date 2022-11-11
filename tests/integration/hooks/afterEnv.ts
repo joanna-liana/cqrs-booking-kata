@@ -1,19 +1,29 @@
+import { Application } from 'express';
 import { AddressInfo } from 'net';
 import { promisify } from 'util';
 
 import { getApp } from '../../../src/app';
 
-// TODO: create and drop a test db every time
 beforeAll(async () => {
-  const { app } = await getApp();
+  // TODO: use a test database name
+  const { app, orm } = await getApp();
 
-  global.server = app.listen();
+  await orm
+    .getSchemaGenerator()
+    .clearDatabase();
 
-  const { port } = (global.server.address() as AddressInfo);
-
-  global.baseTestUrl = `http://localhost:${port}`;
+  startServer(app);
 });
 
 afterAll(async () => {
   await promisify(global.server.close.bind(global.server))();
 });
+
+
+function startServer(app: Application): void {
+  global.server = app.listen();
+
+  const { port } = (global.server.address() as AddressInfo);
+
+  global.baseTestUrl = `http://localhost:${port}`;
+}
