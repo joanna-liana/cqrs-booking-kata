@@ -4,11 +4,17 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-export async function setUpOrm(): Promise<MikroORM<PostgreSqlDriver>> {
+export interface DbConfig {
+  name?: string;
+}
+
+export async function setUpOrm(
+  config?: DbConfig
+): Promise<MikroORM<PostgreSqlDriver>> {
   const orm = await MikroORM.init<PostgreSqlDriver>({
     entities: ['./build/**/*.entity.js'],
     entitiesTs: ['./src/**/*.entity.ts'],
-    dbName: 'cqrs_booking_kata',
+    dbName: config?.name ?? 'cqrs_booking_kata',
     type: 'postgresql',
     password: process.env.PG_PASSWORD,
     port: Number(process.env.PG_PORT)
@@ -16,6 +22,7 @@ export async function setUpOrm(): Promise<MikroORM<PostgreSqlDriver>> {
 
   const generator = orm.getSchemaGenerator();
 
+  await generator.ensureDatabase();
   await generator.updateSchema();
 
   return orm;

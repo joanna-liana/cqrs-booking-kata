@@ -5,8 +5,11 @@ import { promisify } from 'util';
 import { bootstrapApp } from '../../../src/app';
 
 beforeAll(async () => {
-  // TODO: use a test database name
-  const { app, orm } = await bootstrapApp();
+  const { app, orm } = await bootstrapApp({
+    db: {
+      name: `test_${Date.now()}`
+    }
+  });
 
   await orm
     .getSchemaGenerator()

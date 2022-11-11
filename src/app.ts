@@ -5,20 +5,25 @@ import express,
 
 import { ApplicationError } from './bookings/errors/ApplicationError';
 import { createBookingModule } from './bookings/module';
-import { setUpOrm } from './db';
+import { DbConfig, setUpOrm } from './db';
 
 interface App {
   app: Application;
   orm: MikroORM;
 }
 
-export const bootstrapApp = async (): Promise<App> => {
+interface AppBootstrapConfig {
+  db?: DbConfig;
+}
+
+export const bootstrapApp = async ({ db: dbConfig }: AppBootstrapConfig = {
+}): Promise<App> => {
   const app = express();
 
   app.set('trust proxy', 1);
   app.use(json());
 
-  const orm = await setUpOrm();
+  const orm = await setUpOrm(dbConfig);
 
   const { bookingsRouter } = createBookingModule(orm);
 
