@@ -27,9 +27,7 @@ export const getApp = async (): Promise<Application> => {
 
   const orm = await setUpOrm();
 
-  const { commandHandler, queryHandler } = createBookingModule(orm);
-
-  const bookingsRouter = getBookingsRouter(commandHandler, queryHandler);
+  const { bookingsRouter } = createBookingModule(orm);
 
   app.use(bookingsRouter);
 
@@ -54,8 +52,7 @@ export const getApp = async (): Promise<Application> => {
 };
 
 interface BookingModule {
-  commandHandler: BookingCommandHandler;
-  queryHandler: BookingQueryHandler;
+  bookingsRouter: Router;
 }
 
 function getBookingsRouter(
@@ -130,7 +127,9 @@ function createBookingModule(orm: MikroORM): BookingModule {
     eventBus
   );
 
+  const bookingsRouter = getBookingsRouter(commandHandler, queryHandler);
+
   return {
-    commandHandler, queryHandler
+    bookingsRouter
   };
 }
