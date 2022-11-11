@@ -1,3 +1,4 @@
+import { MikroORM } from '@mikro-orm/postgresql';
 import express,
 { Application, json, NextFunction, Request, Response }
   from 'express';
@@ -6,7 +7,12 @@ import { ApplicationError } from './bookings/errors/ApplicationError';
 import { createBookingModule } from './bookings/module';
 import { setUpOrm } from './db';
 
-export const getApp = async (): Promise<Application> => {
+interface App {
+  app: Application;
+  orm: MikroORM;
+}
+
+export const getApp = async (): Promise<App> => {
   const app = express();
 
   app.set('trust proxy', 1);
@@ -35,5 +41,8 @@ export const getApp = async (): Promise<Application> => {
     res.status(500).send();
   });
 
-  return app;
+  return {
+    app,
+    orm
+  };
 };
