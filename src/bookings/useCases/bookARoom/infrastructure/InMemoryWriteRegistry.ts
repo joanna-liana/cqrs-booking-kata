@@ -1,7 +1,7 @@
+import { BookingWriteModel } from '../domain/BookingWriteModel';
 import {
-  BookingWriteModel,
   BookingWriteRegistry
-} from './BookingCommandHandler';
+} from '../domain/BookingWriteRegistry';
 
 export class InMemoryWriteRegistry implements BookingWriteRegistry {
   constructor(private readonly bookings: BookingWriteModel[]) {}

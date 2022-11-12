@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Response } from 'express';
 
-import { ROOM_ONE_NAME } from '../../../src/bookings/rooms';
+import { ROOM_ONE_NAME } from '../../../src/bookings/shared/domain/rooms';
 
 describe('Book a room use case', () => {
   let testUrl: string;

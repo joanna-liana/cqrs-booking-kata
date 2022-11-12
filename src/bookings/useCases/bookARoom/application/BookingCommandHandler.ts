@@ -1,20 +1,14 @@
-import { RoomUnavailableError } from '../errors/RoomUnavailableError';
-import { EventBus } from '../events/EventBus';
-import { Events } from '../events/Events';
-import { FindFreeRoom } from '../freeRoomFinder';
+import {
+  RoomUnavailableError
+} from '../../../shared/application/errors/RoomUnavailableError';
+import { Events } from '../../../shared/domain/Events';
+import { FindFreeRoom } from '../../../shared/domain/freeRoomFinder';
+import { EventBus } from '../../../shared/infrastructure/EventBus';
+import { BookingWriteModel } from '../domain/BookingWriteModel';
+import {
+  BookingWriteRegistry
+} from '../domain/BookingWriteRegistry';
 
-
-export interface BookingWriteModel {
-  clientId: string;
-  roomName: string;
-  arrivalDate: Date;
-  departureDate: Date;
-}
-
-export interface BookingWriteRegistry {
-  makeABooking(booking: BookingWriteModel): Promise<void>;
-  getRoomBookings(roomName: string): Promise<BookingWriteModel[]>;
-}
 export class BookingCommandHandler {
   constructor(
     private readonly writeRegistry: BookingWriteRegistry,

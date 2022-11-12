@@ -1,20 +1,11 @@
-import {
-  findFreeRoom,
-} from '../../../src/bookings/freeRoomFinder';
-import {
-  BookingQueryHandler,
-  BookingReadModel,
-  BookingReadRegistry,
-  Room
-} from '../../../src/bookings/queries/BookingQueryHandler';
-import {
-  InMemoryReadRegistry
-} from '../../../src/bookings/queries/InMemoryReadRegistry';
-import {
-  ROOM_ONE_NAME,
-  ROOM_THREE_NAME,
-  ROOM_TWO_NAME,
-} from '../../../src/bookings/rooms';
+/* eslint-disable max-len */
+import { findFreeRoom, Room } from '../../../src/bookings/shared/domain/freeRoomFinder';
+import { ROOM_ONE_NAME, ROOM_THREE_NAME, ROOM_TWO_NAME } from '../../../src/bookings/shared/domain/rooms';
+import { BookingQueryHandler } from '../../../src/bookings/useCases/listBookings/application/BookingQueryHandler';
+import { BookingReadModel } from '../../../src/bookings/useCases/listBookings/domain/BookingReadModel';
+import { BookingReadRegistry } from '../../../src/bookings/useCases/listBookings/domain/BookingReadRegistry';
+import { InMemoryReadRegistry } from '../../../src/bookings/useCases/listBookings/infrastructure/InMemoryReadRegistry';
+/* eslint-enable max-len */
 
 describe('List free rooms use case', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);

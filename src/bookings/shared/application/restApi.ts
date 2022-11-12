@@ -1,8 +1,13 @@
 import { Router } from 'express';
 
-import { BookingCommandHandler } from './commands/BookingCommandHandler';
-import { BookingQueryHandler } from './queries/BookingQueryHandler';
+import {
+  BookingCommandHandler
+} from '../../useCases/bookARoom/application/BookingCommandHandler';
+import {
+  BookingQueryHandler
+} from '../../useCases/listBookings/application/BookingQueryHandler';
 
+// TODO: split REST API by use case
 export function getBookingsRouter(
   commandHandler: BookingCommandHandler,
   queryHandler: BookingQueryHandler

@@ -1,9 +1,7 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
 
-import {
-  BookingReadModel,
-  BookingReadRegistry
-} from './BookingQueryHandler';
+import { BookingReadModel } from '../domain/BookingReadModel';
+import { BookingReadRegistry } from '../domain/BookingReadRegistry';
 import { BookingRead } from './BookingRead.entity';
 
 export class PostgresReadRegistry implements BookingReadRegistry {

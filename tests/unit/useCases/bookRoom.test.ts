@@ -1,27 +1,23 @@
+/* eslint-disable max-len */
 
-import {
-  BookingCommandHandler,
-  BookingWriteModel
-} from '../../../src/bookings/commands/BookingCommandHandler';
-import {
-  InMemoryWriteRegistry
-} from '../../../src/bookings/commands/InMemoryWriteRegistry';
-import { EventBus } from '../../../src/bookings/events/EventBus';
-import {
-  InMemoryEventBus
-} from '../../../src/bookings/events/InMemoryEventBus';
-import { findFreeRoom } from '../../../src/bookings/freeRoomFinder';
-import {
-  BookingQueryHandler,
-  BookingReadModel,
-  BookingReadRegistry,
-} from '../../../src/bookings/queries/BookingQueryHandler';
-import {
-  InMemoryReadRegistry
-} from '../../../src/bookings/queries/InMemoryReadRegistry';
+import { findFreeRoom } from '../../../src/bookings/shared/domain/freeRoomFinder';
 import {
   ROOM_ONE_NAME,
-} from '../../../src/bookings/rooms';
+} from '../../../src/bookings/shared/domain/rooms';
+import { EventBus } from '../../../src/bookings/shared/infrastructure/EventBus';
+import { InMemoryEventBus } from '../../../src/bookings/shared/infrastructure/InMemoryEventBus';
+import { BookingCommandHandler } from '../../../src/bookings/useCases/bookARoom/application/BookingCommandHandler';
+import { BookingWriteModel } from '../../../src/bookings/useCases/bookARoom/domain/BookingWriteModel';
+import {
+  InMemoryWriteRegistry
+} from '../../../src/bookings/useCases/bookARoom/infrastructure/InMemoryWriteRegistry';
+import { BookingQueryHandler } from '../../../src/bookings/useCases/listBookings/application/BookingQueryHandler';
+import { BookingReadModel } from '../../../src/bookings/useCases/listBookings/domain/BookingReadModel';
+import { BookingReadRegistry } from '../../../src/bookings/useCases/listBookings/domain/BookingReadRegistry';
+import {
+  InMemoryReadRegistry
+} from '../../../src/bookings/useCases/listBookings/infrastructure/InMemoryReadRegistry';
+/* eslint-enable max-len */
 
 describe('Book a room use case', () => {
   const ANY_CLIENT_ID = 'client1';

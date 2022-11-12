@@ -1,22 +1,12 @@
-import { EventBus } from '../events/EventBus';
-import { Events } from '../events/Events';
-import { InMemoryEventBus } from '../events/InMemoryEventBus';
-import { FindFreeRoom } from '../freeRoomFinder';
-
-export interface Room {
-  name: string;
-}
-
-export interface BookingReadModel {
-  roomName: string;
-  arrivalDate: Date;
-  departureDate: Date;
-}
-
-export interface BookingReadRegistry {
-  getAll(): Promise<BookingReadModel[]>;
-  add(booking: BookingReadModel): Promise<void>;
-}
+import { Events } from '../../../shared/domain/Events';
+import { FindFreeRoom } from '../../../shared/domain/freeRoomFinder';
+import { EventBus } from '../../../shared/infrastructure/EventBus';
+import {
+  InMemoryEventBus
+} from '../../../shared/infrastructure/InMemoryEventBus';
+import { BookingReadModel } from '../domain/BookingReadModel';
+import { BookingReadRegistry } from '../domain/BookingReadRegistry';
+import { Room } from './dtos/Room';
 
 export class BookingQueryHandler {
   constructor(

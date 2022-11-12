@@ -1,4 +1,3 @@
-
 export type EventHandler<TPayload = unknown> = (
   payload: TPayload
 ) => Promise<void>;

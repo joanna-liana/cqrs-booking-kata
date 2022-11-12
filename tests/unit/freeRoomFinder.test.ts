@@ -1,13 +1,13 @@
 import { addDays, subDays } from 'date-fns';
 
 import {
+  ROOM_ONE_NAME,
+} from '../../src/bookings/shared/domain/rooms';
+import {
   ExistingBooking,
   findFreeRoom,
   Room
-} from '../../src/bookings/freeRoomFinder';
-import {
-  ROOM_ONE_NAME,
-} from '../../src/bookings/rooms';
+} from '../../src/bookings/shared/domain/freeRoomFinder';
 
 describe('Free room finder', () => {
   const ARRIVAL_DATE = new Date(2020, 1, 5);

@@ -1,6 +1,6 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 
-import { BookingReadModel } from './BookingQueryHandler';
+import { BookingReadModel } from '../domain/BookingReadModel';
 
 // TODO: horrible name to be changed / "read" entity to be removed
 @Entity()

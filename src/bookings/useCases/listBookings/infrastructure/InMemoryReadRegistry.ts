@@ -1,7 +1,5 @@
-import {
-  BookingReadModel,
-  BookingReadRegistry
-} from './BookingQueryHandler';
+import { BookingReadModel } from '../domain/BookingReadModel';
+import { BookingReadRegistry } from '../domain/BookingReadRegistry';
 
 export class InMemoryReadRegistry implements BookingReadRegistry {
   constructor(private readonly bookings: BookingReadModel[]) {}

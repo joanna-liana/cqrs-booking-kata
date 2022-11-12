@@ -1,18 +1,31 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Router } from 'express';
 
+import { getBookingsRouter } from './shared/application/restApi';
+import { findFreeRoom } from './shared/domain/freeRoomFinder';
+import { InMemoryEventBus } from './shared/infrastructure/InMemoryEventBus';
 import {
-  BookingCommandHandler,
+  BookingCommandHandler
+} from './useCases/bookARoom/application/BookingCommandHandler';
+import {
   BookingWriteModel
-} from './commands/BookingCommandHandler';
-import { BookingWrite } from './commands/BookingWrite.entity';
-import { PostgresWriteRegistry } from './commands/PostgresWriteRegistry';
-import { InMemoryEventBus } from './events/InMemoryEventBus';
-import { findFreeRoom } from './freeRoomFinder';
-import { BookingQueryHandler } from './queries/BookingQueryHandler';
-import { BookingRead } from './queries/BookingRead.entity';
-import { PostgresReadRegistry } from './queries/PostgresReadRegistry';
-import { getBookingsRouter } from './restApi';
+} from './useCases/bookARoom/domain/BookingWriteModel';
+import {
+  BookingWrite
+} from './useCases/bookARoom/infrastructure/BookingWrite.entity';
+import {
+  PostgresWriteRegistry
+} from './useCases/bookARoom/infrastructure/PostgresWriteRegistry';
+import {
+  BookingQueryHandler
+} from './useCases/listBookings/application/BookingQueryHandler';
+import {
+  BookingRead
+} from './useCases/listBookings/infrastructure/BookingRead.entity';
+import {
+  PostgresReadRegistry
+} from './useCases/listBookings/infrastructure/PostgresReadRegistry';
+
 
 interface BookingModule {
   bookingsRouter: Router;

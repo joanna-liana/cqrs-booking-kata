@@ -1,9 +1,9 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
 
+import { BookingWriteModel } from '../domain/BookingWriteModel';
 import {
-  BookingWriteModel,
   BookingWriteRegistry
-} from './BookingCommandHandler';
+} from '../domain/BookingWriteRegistry';
 import { BookingWrite } from './BookingWrite.entity';
 
 export class PostgresWriteRegistry implements BookingWriteRegistry {

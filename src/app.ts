@@ -3,8 +3,10 @@ import express,
 { Application, json, NextFunction, Request, Response }
   from 'express';
 
-import { ApplicationError } from './bookings/errors/ApplicationError';
 import { createBookingModule } from './bookings/module';
+import {
+  ApplicationError
+} from './bookings/shared/application/errors/ApplicationError';
 import { DbConfig, setUpOrm } from './db';
 
 interface App {
