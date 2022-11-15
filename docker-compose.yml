@@ -11,5 +11,20 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
+  rabbitmq:
+    image: rabbitmq:3.11-management-alpine
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      POSTGRES_DB: cqrs_booking_kata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
 volumes:
   postgres-data:
+  rabbitmq-data:
+  rabbitmq-log:

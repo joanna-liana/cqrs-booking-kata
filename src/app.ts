@@ -7,7 +7,8 @@ import { createBookingModule } from './bookings/module';
 import {
   ApplicationError
 } from './bookings/shared/application/errors/ApplicationError';
-import { DbConfig, setUpOrm } from './db';
+import { DbConfig, setUpOrm } from './bookings/shared/infrastructure/db';
+import { setUpEventBus } from './bookings/shared/infrastructure/rabbitMq';
 
 interface App {
   app: Application;
@@ -24,6 +25,8 @@ export const bootstrapApp = async ({ db: dbConfig }: AppBootstrapConfig = {
 
   app.set('trust proxy', 1);
   app.use(json());
+
+  await setUpEventBus();
 
   const orm = await setUpOrm(dbConfig);
 
