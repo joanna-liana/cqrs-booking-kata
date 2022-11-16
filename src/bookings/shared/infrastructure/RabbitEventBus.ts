@@ -26,7 +26,9 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
 
     this.channel.bindQueue(queue, this.exchanges.default, '');
 
-    this.channel.consume(queue, async (msg) => {
+    await this.channel.consume(queue, async (msg) => {
+      console.log(`[${queue}] Message received`);
+
       if (!msg.content) {
         console.log(`[${queue}] Message without content`);
 
@@ -40,6 +42,11 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
       await handler(parsedContent);
 
       this.channel.ack(msg);
+
+      console.log(
+        `[${queue}] Message processed and acked`,
+        parsedContent
+      );
     }, {
       noAck: false
     });

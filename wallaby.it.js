@@ -14,6 +14,8 @@ module.exports = function (_wallaby) {
       configFile: 'jest.it.config.js'
     },
 
+    runMode: 'onsave'
+
     // trace: true
   };
 };

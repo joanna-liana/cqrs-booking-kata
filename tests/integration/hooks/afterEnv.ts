@@ -5,11 +5,13 @@ import { promisify } from 'util';
 import { bootstrapApp } from '../../../src/app';
 
 beforeAll(async () => {
-  const { app, orm } = await bootstrapApp({
+  const { app, orm, rabbit } = await bootstrapApp({
     db: {
       name: `test_${Date.now()}`
     }
   });
+
+  global.rabbit = rabbit;
 
   await orm
     .getSchemaGenerator()

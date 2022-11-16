@@ -8,11 +8,15 @@ import {
   ApplicationError
 } from './bookings/shared/application/errors/ApplicationError';
 import { DbConfig, setUpOrm } from './bookings/shared/infrastructure/db';
-import { setUpEventBus } from './bookings/shared/infrastructure/rabbitMq';
+import {
+  RabbitInstance,
+  setUpEventBus
+} from './bookings/shared/infrastructure/rabbitMq';
 
 interface App {
   app: Application;
   orm: MikroORM;
+  rabbit: RabbitInstance;
 }
 
 interface AppBootstrapConfig {
@@ -26,7 +30,7 @@ export const bootstrapApp = async ({ db: dbConfig }: AppBootstrapConfig = {
   app.set('trust proxy', 1);
   app.use(json());
 
-  await setUpEventBus();
+  const rabbit = await setUpEventBus();
 
   const orm = await setUpOrm(dbConfig);
 
@@ -53,6 +57,7 @@ export const bootstrapApp = async ({ db: dbConfig }: AppBootstrapConfig = {
 
   return {
     app,
-    orm
+    orm,
+    rabbit
   };
 };
