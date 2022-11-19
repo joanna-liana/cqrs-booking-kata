@@ -18,18 +18,17 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
     return Promise.resolve();
   }
 
-  // TODO: test this
   async on(eventName: string, handler: EventHandler<TPayload>): Promise<void> {
     const { queue } = await this.channel.assertQueue(eventName);
 
     console.log(`[*] Subscribed to messages in ${queue}`);
 
-    this.channel.bindQueue(queue, this.exchanges.default, '');
+    await this.channel.bindQueue(queue, this.exchanges.default, '');
 
     await this.channel.consume(queue, async (msg) => {
       console.log(`[${queue}] Message received`);
 
-      if (!msg.content) {
+      if (!msg?.content) {
         console.log(`[${queue}] Message without content`);
 
         return;
