@@ -4,6 +4,7 @@ module.exports = {
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$',
   testEnvironment: 'node',
-  rootDir: 'tests/integration',
-  collectCoverageFrom: ['**/*.ts', '!demo.ts']
+  rootDir: 'tests/e2e',
+  collectCoverageFrom: ['**/*.ts', '!demo.ts'],
+  setupFilesAfterEnv: ['<rootDir>/hooks/afterEnv.ts']
 };

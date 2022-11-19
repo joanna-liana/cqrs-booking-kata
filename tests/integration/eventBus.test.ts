@@ -1,17 +1,26 @@
-import { EventBus } from '../../../src/bookings/shared/infrastructure/EventBus';
+import { EventBus } from '../../src/bookings/shared/infrastructure/EventBus';
 import {
   RabbitEventBus
-} from '../../../src/bookings/shared/infrastructure/RabbitEventBus';
+} from '../../src/bookings/shared/infrastructure/RabbitEventBus';
+import {
+  setUpEventBus
+} from '../../src/bookings/shared/infrastructure/rabbitMq';
 
 describe('Event bus', () => {
   const EVENT_NAME = 'TEST EVENT';
 
   let eventBus: EventBus<string>;
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    const rabbit = await setUpEventBus();
+
+    // eventBus = new InMemoryEventBus(
+    //   new EventEmitter()
+    // );
+
     eventBus = new RabbitEventBus(
-      global.rabbit.channel,
-      global.rabbit.exchanges
+      rabbit.channel,
+      rabbit.exchanges
     );
   });
 
@@ -33,4 +42,6 @@ describe('Event bus', () => {
     // then
     expect(processingResult).toBe('test_received');
   });
+
+  // TODO: test processesing messages only for the registered events
 });

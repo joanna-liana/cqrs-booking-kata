@@ -9,6 +9,7 @@
     "test:cov": "jest --collectCoverage",
     "test:unit": "jest --config jest.unit.config.js",
     "test:it": "jest --config jest.it.config.js",
+    "test:e2e": "jest --config jest.e2e.config.js",
     "lint": "eslint --fix ."
   },
   "keywords": [],
