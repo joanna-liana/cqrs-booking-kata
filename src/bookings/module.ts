@@ -3,7 +3,8 @@ import { Router } from 'express';
 
 import { getBookingsRouter } from './shared/application/restApi';
 import { findFreeRoom } from './shared/domain/freeRoomFinder';
-import { InMemoryEventBus } from './shared/infrastructure/InMemoryEventBus';
+import { RabbitEventBus } from './shared/infrastructure/RabbitEventBus';
+import { RabbitInstance } from './shared/infrastructure/rabbitMq';
 import {
   BookingCommandHandler
 } from './useCases/bookARoom/application/BookingCommandHandler';
@@ -30,12 +31,18 @@ import {
 interface BookingModule {
   bookingsRouter: Router;
 }
-export function createBookingModule(orm: MikroORM): BookingModule {
+export function createBookingModule(
+  orm: MikroORM,
+  rabbit: RabbitInstance
+): BookingModule {
   const writeRegistry = new PostgresWriteRegistry(
     orm.em.fork().getRepository(BookingWrite)
   );
 
-  const eventBus = new InMemoryEventBus<BookingWriteModel>();
+  const eventBus = new RabbitEventBus<BookingWriteModel>(
+    rabbit.channel,
+    rabbit.exchanges
+  );
 
   const commandHandler = new BookingCommandHandler(
     writeRegistry,

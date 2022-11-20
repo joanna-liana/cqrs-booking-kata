@@ -34,7 +34,7 @@ export const bootstrapApp = async ({ db: dbConfig }: AppBootstrapConfig = {
 
   const orm = await setUpOrm(dbConfig);
 
-  const { bookingsRouter } = createBookingModule(orm);
+  const { bookingsRouter } = createBookingModule(orm, rabbit);
 
   app.use(bookingsRouter);
 
