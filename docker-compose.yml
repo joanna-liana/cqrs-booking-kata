@@ -17,10 +17,6 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    environment:
-      POSTGRES_DB: cqrs_booking_kata
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq/
       - rabbitmq-log:/var/log/rabbitmq
