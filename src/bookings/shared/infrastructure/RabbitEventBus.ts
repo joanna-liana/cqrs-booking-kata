@@ -3,6 +3,8 @@ import { RabbitInstance } from './rabbitMq';
 
 // TODO: inject logger
 export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
+  private handlerByEvent = new Map<string, EventHandler<TPayload>[]>;
+
   constructor(
     private readonly channel: RabbitInstance['channel'],
     private readonly exchanges: RabbitInstance['exchanges'],
@@ -25,6 +27,10 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
 
     await this.channel.bindQueue(queue, this.exchanges.default, eventName);
 
+    this.handlerByEvent.get(eventName) ?
+      this.handlerByEvent.get(eventName).push(handler) :
+      this.handlerByEvent.set(eventName, [handler]);
+
     await this.channel.consume(queue, async (msg) => {
       console.log(`[${queue}] Message received`, msg);
 
@@ -38,7 +44,9 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
 
       console.log(`[${queue}] Message:`, parsedContent);
 
-      await handler(parsedContent);
+      await Promise.all(
+        this.handlerByEvent.get(eventName).map(h => h(parsedContent))
+      );
 
       this.channel.ack(msg);
 
