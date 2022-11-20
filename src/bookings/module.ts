@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Router } from 'express';
 
-import { getBookingsRouter } from './shared/application/restApi';
+import { getBookingsRouter } from './shared/application/rest/restApi';
 import { findFreeRoom } from './shared/domain/freeRoomFinder';
 import { RabbitEventBus } from './shared/infrastructure/RabbitEventBus';
 import { RabbitInstance } from './shared/infrastructure/rabbitMq';

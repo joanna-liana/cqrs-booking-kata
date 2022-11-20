@@ -1,11 +1,15 @@
-import { Router } from 'express';
+import {
+  Router
+} from 'express';
 
 import {
   BookingCommandHandler
-} from '../../useCases/bookARoom/application/BookingCommandHandler';
+} from '../../../useCases/bookARoom/application/BookingCommandHandler';
 import {
   BookingQueryHandler
-} from '../../useCases/listBookings/application/BookingQueryHandler';
+} from '../../../useCases/listBookings/application/BookingQueryHandler';
+import { Controller } from './Controller';
+import { wrapAsync } from './middleware/wrapAsync';
 
 // TODO: split REST API by use case
 export function getBookingsRouter(
@@ -14,24 +18,22 @@ export function getBookingsRouter(
 ): Router {
   const router = Router();
 
+  const addBookingController: Controller = async (req, res) => {
+    const { arrival, departure, clientId, room } = req.body;
+
+    await commandHandler.bookARoom({
+      arrivalDate: new Date(arrival),
+      departureDate: new Date(departure),
+      clientId,
+      roomName: room
+    });
+
+    res.status(201).send();
+  };
+
   router.post(
     '/bookings',
-    async (req, res, next) => {
-      try {
-        const { arrival, departure, clientId, room } = req.body;
-
-        await commandHandler.bookARoom({
-          arrivalDate: new Date(arrival),
-          departureDate: new Date(departure),
-          clientId,
-          roomName: room
-        });
-
-        res.status(201).send();
-      } catch (err) {
-        next(err);
-      }
-    }
+    wrapAsync(addBookingController)
   );
 
   router.get(
