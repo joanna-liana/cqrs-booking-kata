@@ -29,7 +29,13 @@ export function getBookingsRouter(
     }))
   );
 
-  const getBookingsController: AsyncRequestHandler = async (req, res, next) => {
+  interface GetBookingsControllerProps {
+    queryHandler: BookingQueryHandler;
+  }
+
+  const getBookingsController = (
+    { queryHandler }: GetBookingsControllerProps
+  ): AsyncRequestHandler => async (req, res, next) => {
     try {
       const { arrival, departure } = req.query;
 
@@ -48,7 +54,9 @@ export function getBookingsRouter(
 
   router.get(
     BASE_PATH,
-    wrapAsync(getBookingsController)
+    wrapAsync(getBookingsController({
+      queryHandler
+    }))
   );
 
   return router;
