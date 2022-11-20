@@ -48,13 +48,7 @@ export function getBookingsRouter(
 
   router.get(
     BASE_PATH,
-    async (req, res, next) => {
-      try {
-        await getBookingsController(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    }
+    wrapAsync(getBookingsController)
   );
 
   return router;
