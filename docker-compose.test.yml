@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  postgres:
+    image: postgres:15.0
+    restart: always
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_DB: cqrs_booking_kata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  rabbitmq:
+    image: rabbitmq:3.11-management-alpine
+    restart: always
+    ports:
+      - 5673:5672
+      - 15673:15672
