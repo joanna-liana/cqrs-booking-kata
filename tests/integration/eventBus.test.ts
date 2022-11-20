@@ -85,4 +85,26 @@ describe('Event bus', () => {
       expect(eventHandler).not.toHaveBeenCalled();
     });
   });
+
+  describe('processes messages with multiple handlers', () => {
+    it.each(busFactories)('%s', async (_name, eventBusFactory) => {
+      // given
+      const message = 'test';
+      const eventHandlerOne = jest.fn();
+      const eventHandlerTwo = jest.fn();
+
+      const eventBus = eventBusFactory();
+
+      await eventBus.on(EVENT_NAME, eventHandlerOne);
+      await eventBus.on(EVENT_NAME, eventHandlerTwo);
+
+      // when
+      await eventBus.emit(EVENT_NAME, message);
+      await endEventLoop();
+
+      // then
+      expect(eventHandlerOne).toHaveBeenCalledWith(message);
+      expect(eventHandlerTwo).toHaveBeenCalledWith(message);
+    });
+  });
 });
