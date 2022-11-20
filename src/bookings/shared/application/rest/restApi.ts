@@ -11,8 +11,8 @@ import {
 import {
   BookingQueryHandler
 } from '../../../useCases/listBookings/application/BookingQueryHandler';
+import { getBookingsController } from '../../../useCases/listBookings/application/getBookingsController';
 import { wrapAsync } from './middleware/wrapAsync';
-import { AsyncRequestHandler } from './types';
 
 const BASE_PATH = '/bookings';
 
@@ -28,29 +28,6 @@ export function getBookingsRouter(
       commandHandler
     }))
   );
-
-  interface GetBookingsControllerProps {
-    queryHandler: BookingQueryHandler;
-  }
-
-  const getBookingsController = (
-    { queryHandler }: GetBookingsControllerProps
-  ): AsyncRequestHandler => async (req, res, next) => {
-    try {
-      const { arrival, departure } = req.query;
-
-      const data = await queryHandler.freeRooms(
-        new Date(arrival as string),
-        new Date(departure as string)
-      );
-
-      res.status(200).json({
-        data
-      });
-    } catch (err) {
-      next(err);
-    }
-  };
 
   router.get(
     BASE_PATH,
