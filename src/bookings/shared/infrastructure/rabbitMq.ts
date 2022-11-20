@@ -14,7 +14,7 @@ export async function setUpEventBus(
   const channel = await connection.createChannel();
   const exchange = 'internal';
 
-  channel.assertExchange(exchange, 'fanout', {
+  await channel.assertExchange(exchange, 'direct', {
     durable: true
   });
 

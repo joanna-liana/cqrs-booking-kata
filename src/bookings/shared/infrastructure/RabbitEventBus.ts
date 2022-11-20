@@ -23,10 +23,10 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
 
     console.log(`[*] Subscribed to messages in ${queue}`);
 
-    await this.channel.bindQueue(queue, this.exchanges.default, '');
+    await this.channel.bindQueue(queue, this.exchanges.default, eventName);
 
     await this.channel.consume(queue, async (msg) => {
-      console.log(`[${queue}] Message received`);
+      console.log(`[${queue}] Message received`, msg);
 
       if (!msg?.content) {
         console.log(`[${queue}] Message without content`);
