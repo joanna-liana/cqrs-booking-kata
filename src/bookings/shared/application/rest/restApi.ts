@@ -13,6 +13,8 @@ import {
 } from '../../../useCases/listBookings/application/BookingQueryHandler';
 import { wrapAsync } from './middleware/wrapAsync';
 
+const BASE_PATH = '/bookings';
+
 export function getBookingsRouter(
   commandHandler: BookingCommandHandler,
   queryHandler: BookingQueryHandler
@@ -20,14 +22,14 @@ export function getBookingsRouter(
   const router = Router();
 
   router.post(
-    '/bookings',
+    BASE_PATH,
     wrapAsync(addBookingController({
       commandHandler
     }))
   );
 
   router.get(
-    '/bookings',
+    BASE_PATH,
     async (req, res, next) => {
       try {
         const { arrival, departure } = req.query;
