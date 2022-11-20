@@ -49,7 +49,7 @@ describe('Event bus', () => {
     await rabbit.connection.close();
   });
 
-  describe('processes messages', () => {
+  describe('processes messages using the provided handler', () => {
     it.each(busFactories)('%s', async (_name, eventBusFactory) => {
       // given
       const message = 'test';
@@ -67,5 +67,22 @@ describe('Event bus', () => {
     });
   });
 
-  // TODO: test processesing messages only for the registered events
+  describe('processes messages only for the registered events', () => {
+    it.each(busFactories)('%s', async (_name, eventBusFactory) => {
+      // given
+      const ANOTHER_EVENT_NAME = EVENT_NAME + '_antoher';
+      const message = 'test';
+      const eventHandler = jest.fn();
+      const eventBus = eventBusFactory();
+
+      await eventBus.on(EVENT_NAME, eventHandler);
+
+      // when
+      await eventBus.emit(ANOTHER_EVENT_NAME, message);
+      await endEventLoop();
+
+      // then
+      expect(eventHandler).not.toHaveBeenCalled();
+    });
+  });
 });
