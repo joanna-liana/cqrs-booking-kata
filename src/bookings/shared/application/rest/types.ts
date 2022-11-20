@@ -5,7 +5,7 @@ import {
 } from 'express';
 
 
-export type Controller = (
+export type AsyncRequestHandler = (
   req: Request,
   res: Response,
   next?: NextFunction

@@ -1,4 +1,4 @@
-import { Controller } from '../../../shared/application/rest/Controller';
+import { AsyncRequestHandler } from '../../../shared/application/rest/types';
 import { BookingCommandHandler } from './BookingCommandHandler';
 
 export interface AddBookingControllerProps {
@@ -7,7 +7,7 @@ export interface AddBookingControllerProps {
 
 export const addBookingController = (
   { commandHandler }: AddBookingControllerProps
-): Controller => async (req, res) => {
+): AsyncRequestHandler => async (req, res) => {
   const { arrival, departure, clientId, room } = req.body;
 
   await commandHandler.bookARoom({

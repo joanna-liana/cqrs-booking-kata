@@ -1,14 +1,12 @@
 import { RequestHandler } from 'express';
 
-import { Controller } from "../Controller";
+import { AsyncRequestHandler } from '../types';
 
-export const wrapAsync = (controller: Controller): RequestHandler => async (
-  req,
-  res,
-  next
-): Promise<void> => {
+export const wrapAsync = (
+  handler: AsyncRequestHandler
+): RequestHandler => async (req, res, next): Promise<void> => {
   try {
-    await controller(req, res, next);
+    await handler(req, res, next);
   } catch (err) {
     next(err);
   }
