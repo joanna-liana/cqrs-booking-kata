@@ -1,8 +1,9 @@
-import amqp, { Channel } from 'amqplib';
+import amqp, { Channel, Connection } from 'amqplib';
 
 export interface RabbitInstance {
   channel: Channel;
   exchanges: Record<'default' & string, string>;
+  connection: Connection;
 }
 
 export async function setUpEventBus(
@@ -21,6 +22,7 @@ export async function setUpEventBus(
     channel,
     exchanges: {
       default: exchange
-    }
+    },
+    connection
   };
 }

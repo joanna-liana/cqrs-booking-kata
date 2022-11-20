@@ -45,6 +45,10 @@ describe('Event bus', () => {
     await rabbit.channel.deleteQueue(EVENT_NAME);
   });
 
+  afterAll(async () => {
+    await rabbit.connection.close();
+  });
+
   describe('processes messages', () => {
     it.each(busFactories)('%s', async (_name, eventBusFactory) => {
       // given
