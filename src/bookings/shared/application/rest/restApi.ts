@@ -11,7 +11,9 @@ import {
 import {
   BookingQueryHandler
 } from '../../../useCases/listBookings/application/BookingQueryHandler';
-import { getBookingsController } from '../../../useCases/listBookings/application/getBookingsController';
+import {
+  getBookingsController
+} from '../../../useCases/listBookings/application/restController';
 import { wrapAsync } from './middleware/wrapAsync';
 
 const BASE_PATH = '/bookings';

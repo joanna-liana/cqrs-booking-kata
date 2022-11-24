@@ -16,6 +16,8 @@ export class BookingCommandHandler {
     private readonly eventBus: EventBus<BookingWriteModel>,
   ) {}
 
+  // TODO: maybe change this into a command
+  // but that would be a breaking change given the requirements!
   async bookARoom(booking: BookingWriteModel): Promise<void> {
     const roomBookings = await this.writeRegistry
       .getRoomBookings(booking.roomName);
