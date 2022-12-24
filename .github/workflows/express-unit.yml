@@ -11,6 +11,10 @@ jobs:
   unit_test:
     runs-on: ubuntu-latest
     
+    defaults:
+      run:
+        working-directory: ./express
+    
     steps:
     - uses: actions/checkout@v3.2.0
     
@@ -19,7 +23,6 @@ jobs:
       with:
         node-version: ">=18.3.0"
     
-    - run: cd express
     - run: npm i -g yarn
     - run: yarn install
     - run: yarn test:unit
