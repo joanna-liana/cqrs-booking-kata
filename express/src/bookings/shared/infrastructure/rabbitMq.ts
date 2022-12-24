@@ -6,10 +6,17 @@ export interface RabbitInstance {
   connection: Connection;
 }
 
+export interface EventBusConfig {
+  host?: string;
+  port?: number;
+}
+
 export async function setUpEventBus(
-  host = 'localhost'
+  { host = 'localhost', port = 5673 }: EventBusConfig = {
+  }
 ): Promise<RabbitInstance> {
-  const connection = await amqp.connect(`amqp://${host}`);
+  console.log('RABBIT', host, port);
+  const connection = await amqp.connect(`amqp://${host}:${port}`);
 
   const channel = await connection.createChannel();
   const exchange = 'internal';

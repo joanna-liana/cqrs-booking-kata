@@ -8,6 +8,9 @@ beforeAll(async () => {
   const { app, orm, rabbit } = await bootstrapApp({
     db: {
       name: `test_${Date.now()}`
+    },
+    eventBus: {
+      port: 5673
     }
   });
 
@@ -21,6 +24,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  console.log('CLOSING APP');
   await promisify(global.server.close.bind(global.server))();
 });
 

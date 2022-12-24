@@ -38,7 +38,10 @@ describe('Event bus', () => {
 
   beforeAll(async () => {
     // TODO: use env var
-    rabbit = await setUpEventBus('localhost:5673');
+    rabbit = await setUpEventBus({
+      host: 'localhost',
+      port: 5673
+    });
   });
 
   beforeEach(async () => {

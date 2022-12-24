@@ -9,6 +9,7 @@ import {
 } from './bookings/shared/application/errors/ApplicationError';
 import { DbConfig, setUpOrm } from './bookings/shared/infrastructure/db';
 import {
+  EventBusConfig,
   RabbitInstance,
   setUpEventBus
 } from './bookings/shared/infrastructure/rabbitMq';
@@ -21,16 +22,19 @@ interface App {
 
 interface AppBootstrapConfig {
   db?: DbConfig;
+  eventBus?: EventBusConfig;
 }
 
-export const bootstrapApp = async ({ db: dbConfig }: AppBootstrapConfig = {
-}): Promise<App> => {
+export const bootstrapApp = async (
+  { db: dbConfig, eventBus: eventBusConfig }: AppBootstrapConfig = {
+  }
+): Promise<App> => {
   const app = express();
 
   app.set('trust proxy', 1);
   app.use(json());
 
-  const rabbit = await setUpEventBus();
+  const rabbit = await setUpEventBus(eventBusConfig);
 
   const orm = await setUpOrm(dbConfig);
 
