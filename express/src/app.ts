@@ -2,6 +2,7 @@ import { MikroORM } from '@mikro-orm/postgresql';
 import express,
 { Application, json, NextFunction, Request, Response }
   from 'express';
+import morgan from 'morgan';
 
 import { createBookingModule } from './bookings/module';
 import {
@@ -33,6 +34,7 @@ export const bootstrapApp = async (
 
   app.set('trust proxy', 1);
   app.use(json());
+  app.use(morgan('combined'));
 
   const rabbit = await setUpEventBus(eventBusConfig);
 
