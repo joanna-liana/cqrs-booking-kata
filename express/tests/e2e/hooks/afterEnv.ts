@@ -24,8 +24,14 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  console.log('CLOSING APP');
+  await global.rabbit.channel.close();
+  await global.rabbit.connection.close();
+
+  console.log('RABBIT CLOSED');
+
   await promisify(global.server.close.bind(global.server))();
+
+  console.log('SERVER CLOSED');
 });
 
 
