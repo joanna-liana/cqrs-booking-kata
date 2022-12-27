@@ -34,7 +34,7 @@ export const bootstrapApp = async (
 
   app.set('trust proxy', 1);
   app.use(json());
-  app.use(morgan('combined'));
+  // app.use(morgan('combined'));
 
   const rabbit = await setUpEventBus(eventBusConfig);
 
