@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  it_tests:
+  e2e_tests:
     runs-on: ubuntu-latest
 
     defaults:
