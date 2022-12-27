@@ -25,5 +25,4 @@ jobs:
 
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
-    - run: RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres npx jest
-    --detectOpenHandles --forceExit  --runInBand --config jest.e2e.config.js
+    - run: yarn test:e2e
