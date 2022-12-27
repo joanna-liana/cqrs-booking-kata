@@ -5,7 +5,7 @@ describe('Book a room use case', () => {
   let testUrl: string;
 
   const ANY_CLIENT_ID = 'client1';
-  const ROOM_TO_BOOK_NAME = 'ROOM_ONE_NAME';
+  const ROOM_TO_BOOK_NAME = 'Room 1';
 
   const ARRIVAL_DATE = new Date(2020, 1, 5);
   const DEPARTURE_DATE = new Date(2020, 1, 9);

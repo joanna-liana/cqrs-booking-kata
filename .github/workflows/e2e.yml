@@ -10,17 +10,17 @@ jobs:
 
   e2e_tests:
     runs-on: ubuntu-latest
-     
+
     steps:
     - uses: actions/checkout@v3.2.0
-    
+
     - name: Set up Node
       uses: actions/setup-node@v3.5.1
       with:
         node-version: ">=18.3.0"
-    
+
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
     - run: cd express && yarn install
-    - run: cd express && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start & sleep 15
+    - run: cd express && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start & sleep 5
     - run: yarn test:e2e
