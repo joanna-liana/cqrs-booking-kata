@@ -20,4 +20,7 @@ jobs:
         node-version: ">=18.3.0"
 
     - run: npm i -g yarn
-    - run: ./express-e2e.sh
+    - run: yarn install && yarn docker:test
+    - run: cd express && yarn install
+    - run: cd express && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start & sleep 5
+    - run: yarn test:e2e
