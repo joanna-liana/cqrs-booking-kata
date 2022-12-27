@@ -1,0 +1,28 @@
+name: IT tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  it_tests:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./express
+
+    steps:
+    - uses: actions/checkout@v3.2.0
+
+    - name: Set up Node
+      uses: actions/setup-node@v3.5.1
+      with:
+        node-version: ">=18.3.0"
+
+    - run: npm i -g yarn
+    - run: yarn install && yarn docker:test
+    - run: yarn test:it
