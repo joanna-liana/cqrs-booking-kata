@@ -25,4 +25,4 @@ jobs:
 
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
-    - run: yarn test:e2e
+    - run: RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn test:e2e
