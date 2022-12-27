@@ -20,4 +20,4 @@ jobs:
         node-version: ">=18.3.0"
 
     - run: npm i -g yarn
-    - run: express-e2e.sh
+    - run: ./express-e2e.sh
