@@ -3,6 +3,7 @@ import { BookingsController } from './bookings.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BookingsService } from './bookings.service';
 import { findFreeRoom } from './shared/domain/freeRoomFinder';
+import { InMemoryReadRegistry } from './listBookings/infrastructure/InMemoryReadRegistry';
 
 @Module({
   imports: [
@@ -26,6 +27,11 @@ import { findFreeRoom } from './shared/domain/freeRoomFinder';
     {
       provide: 'FindFreeRoom',
       useValue: findFreeRoom,
+    },
+    // TODO: use Postgres
+    {
+      provide: 'ReadRegistry',
+      useValue: new InMemoryReadRegistry([]),
     },
   ],
 })

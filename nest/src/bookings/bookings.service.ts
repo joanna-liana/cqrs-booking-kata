@@ -1,15 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Events } from './shared/domain/Events';
-import {
-  ClientProxy,
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import { BookingReadRegistry } from './listBookings/domain/BookingReadRegistry';
 import { FindFreeRoom, Room } from './shared/domain/freeRoomFinder';
-import { InMemoryReadRegistry } from './listBookings/infrastructure/InMemoryReadRegistry';
 import { BookingWriteRegistry } from './bookARoom/domain/BookingWriteRegistry';
 import { InMemoryWriteRegistry } from './bookARoom/infrastructure/InMemoryWriteRegistry';
 import { BookingWriteModel } from './bookARoom/domain/BookingWriteModel';
@@ -17,15 +10,16 @@ import { RoomUnavailableError } from './shared/application/errors/RoomUnavailabl
 
 @Injectable()
 export class BookingsService {
-  private readonly readRegistry: BookingReadRegistry;
   private readonly writeRegistry: BookingWriteRegistry;
 
   constructor(
     @Inject('BOOKINGS_SERVICE') private eventBus: ClientProxy,
     @Inject('FindFreeRoom')
     private readonly findFreeRoom: FindFreeRoom,
+    @Inject('ReadRegistry')
+    private readonly readRegistry: BookingReadRegistry,
   ) {
-    this.readRegistry = new InMemoryReadRegistry([]);
+    // TODO: inject
     this.writeRegistry = new InMemoryWriteRegistry([]);
   }
   async bookARoom(booking: BookingWriteModel) {
@@ -47,14 +41,6 @@ export class BookingsService {
 
     await this.writeRegistry.makeABooking(booking);
     await this.eventBus.emit(Events.RoomBooked, booking);
-  }
-
-  @MessagePattern(Events.RoomBooked)
-  async registerBooking(@Payload() data: unknown, @Ctx() context: RmqContext) {
-    console.log(`Pattern: ${context.getPattern()}`);
-
-    // TODO: types, inject registry
-    this.readRegistry.add(data as any);
   }
 
   async freeRooms(arrival: Date, departure: Date): Promise<Room[]> {

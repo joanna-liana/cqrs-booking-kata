@@ -1,9 +1,16 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { Events } from './shared/domain/Events';
+import { BookingReadRegistry } from './listBookings/domain/BookingReadRegistry';
 
 @Controller('bookings')
 export class BookingsController {
-  constructor(private readonly bookingsService: BookingsService) {}
+  constructor(
+    private readonly bookingsService: BookingsService,
+    @Inject('ReadRegistry')
+    private readonly readRegistry: BookingReadRegistry,
+  ) {}
 
   @Post()
   addBooking(@Body() body) {
@@ -27,5 +34,21 @@ export class BookingsController {
     );
 
     return { data: rooms };
+  }
+
+  // TODO: separate controller
+  @EventPattern(Events.RoomBooked)
+  // TODO: type for data?
+  async registerBooking(@Payload() data: any) {
+    console.log('BOOKING REGISTERED', data);
+
+    // TODO: types, inject registry
+    await this.readRegistry.add({
+      arrivalDate: new Date(data.arrivalDate),
+      departureDate: new Date(data.departureDate),
+      roomName: data.roomName,
+    });
+
+    console.log('READS AFTER UPDATE', await this.readRegistry.getAll());
   }
 }
