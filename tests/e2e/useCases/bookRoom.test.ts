@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Response } from 'express';
 
 describe('Book a room use case', () => {
@@ -29,6 +29,29 @@ describe('Book a room use case', () => {
     );
   }
 
+  async function expectUpdatedRoomListing() {
+    async function listRooms(): Promise<AxiosResponse> {
+      return axios.get<{ data: unknown }>(
+        testUrl,
+        {
+          params: {
+            arrival: ARRIVAL_DATE,
+            departure: DEPARTURE_DATE
+          }
+        }
+      );
+    }
+
+    const { data: { data } } = await listRooms();
+
+    expect(data).toEqual(
+      expect.not.arrayContaining([{
+        name: ROOM_TO_BOOK_NAME
+      }])
+    );
+  }
+
+
   it('books a free room in the given period', async () => {
     // when
     const { status } = await bookRoom();
@@ -38,5 +61,7 @@ describe('Book a room use case', () => {
 
     const { status: duplicatedBookingStatus } = await bookRoom();
     expect(duplicatedBookingStatus).toBe(409);
+
+    await expectUpdatedRoomListing();
   });
 });
