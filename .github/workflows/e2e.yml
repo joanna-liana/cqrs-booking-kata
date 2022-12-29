@@ -24,3 +24,7 @@ jobs:
     - run: cd express && yarn install
     - run: cd express && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start & sleep 5
     - run: yarn test:e2e
+    - run: docker rm -f $(docker ps -a) && yarn docker:test
+    - run: cd nest && yarn install
+    - run: cd nest && yarn start & sleep 5
+    - run: yarn test:e2e
