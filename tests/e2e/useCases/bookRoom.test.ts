@@ -42,6 +42,10 @@ describe('Book a room use case', () => {
       );
     }
 
+    await new Promise(resolve => {
+      setTimeout(() => resolve(null), 2000)
+    });
+
     const { data: { data } } = await listRooms();
 
     expect(data).toEqual(
