@@ -5,9 +5,7 @@ import { BookingReadRegistry } from '../domain/BookingReadRegistry';
 import { BookingRead } from './BookingRead.entity';
 
 export class PostgresReadRegistry implements BookingReadRegistry {
-  constructor(
-    private readonly repo: EntityRepository<BookingRead>
-  ) {}
+  constructor(private readonly repo: EntityRepository<BookingRead>) {}
 
   getAll(): Promise<BookingReadModel[]> {
     return this.repo.findAll();

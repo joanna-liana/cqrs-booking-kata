@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 
 @Controller('bookings')
@@ -6,8 +6,15 @@ export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
   @Post()
-  addBooking() {
-    console.log('OCCUPY ROOMS');
+  addBooking(@Body() body) {
+    const { arrival, departure, clientId, room } = body;
+
+    return this.bookingsService.bookARoom({
+      arrivalDate: new Date(arrival),
+      departureDate: new Date(departure),
+      clientId,
+      roomName: room,
+    });
   }
 
   @Get()
