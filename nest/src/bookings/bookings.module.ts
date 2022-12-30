@@ -1,15 +1,24 @@
 import { Module } from '@nestjs/common';
 import { BookingsController } from './bookings.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { BookingsService } from './bookings.service';
+import { BookingQueryHandler } from './listBookings/application/BookingQueryHandler';
 import { findFreeRoom } from './shared/domain/freeRoomFinder';
 import { InMemoryReadRegistry } from './listBookings/infrastructure/InMemoryReadRegistry';
+import { BookingCommandHandler } from './bookARoom/application/BookingCommandHandler';
+import { InMemoryWriteRegistry } from './bookARoom/infrastructure/InMemoryWriteRegistry';
+import { BookingEventsHandler } from './listBookings/application/BookingEventsHandler';
+import {
+  BOOKINGS_EVENT_BUS,
+  FREE_ROOM_FINDER,
+  READ_REGISTRY,
+  WRITE_REGISTRY,
+} from './injectionTokens';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'BOOKINGS_SERVICE',
+        name: BOOKINGS_EVENT_BUS,
         transport: Transport.RMQ,
         options: {
           urls: [`amqp://localhost:${process.env.RABBIT_PORT}`],
@@ -21,17 +30,22 @@ import { InMemoryReadRegistry } from './listBookings/infrastructure/InMemoryRead
       },
     ]),
   ],
-  controllers: [BookingsController],
+  controllers: [BookingsController, BookingEventsHandler],
   providers: [
-    BookingsService,
+    BookingQueryHandler,
+    BookingCommandHandler,
     {
-      provide: 'FindFreeRoom',
+      provide: FREE_ROOM_FINDER,
       useValue: findFreeRoom,
     },
     // TODO: use Postgres
     {
-      provide: 'ReadRegistry',
+      provide: READ_REGISTRY,
       useValue: new InMemoryReadRegistry([]),
+    },
+    {
+      provide: WRITE_REGISTRY,
+      useValue: new InMemoryWriteRegistry([]),
     },
   ],
 })
