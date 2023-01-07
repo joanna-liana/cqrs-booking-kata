@@ -1,3 +1,4 @@
+import { MyLibraryService } from '../../../../../libs/my-library/src';
 import { Events } from '../../../shared/domain/Events';
 import { FindFreeRoom } from '../../../shared/domain/freeRoomFinder';
 import { EventBus } from '../../../shared/infrastructure/EventBus';
@@ -22,6 +23,12 @@ export class BookingQueryHandler {
   }
 
   async freeRooms(arrival: Date, departure: Date): Promise<Room[]> {
+    console.log('WILL CALL EXEC');
+
+    new MyLibraryService().exec();
+
+    console.log('CALLED EXEC');
+
     const bookings = await this.registry.getAll();
 
     return this.findFreeRoom(bookings, {
