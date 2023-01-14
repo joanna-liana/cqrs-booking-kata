@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BookingsController } from './bookings.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientsModule } from '@nestjs/microservices';
 import { BookingQueryHandler } from './listBookings/application/BookingQueryHandler';
 import { findFreeRoom } from './shared/domain/freeRoomFinder';
 import { InMemoryReadRegistry } from './listBookings/infrastructure/InMemoryReadRegistry';
@@ -13,20 +13,14 @@ import {
   READ_REGISTRY,
   WRITE_REGISTRY,
 } from './injectionTokens';
+import { RabbitConfig } from './shared/infrastructure/RabbitConfig';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
+        ...RabbitConfig,
         name: BOOKINGS_EVENT_BUS,
-        transport: Transport.RMQ,
-        options: {
-          urls: [`amqp://localhost:${process.env.RABBIT_PORT}`],
-          queue: 'bookings',
-          queueOptions: {
-            durable: true,
-          },
-        },
       },
     ]),
   ],
