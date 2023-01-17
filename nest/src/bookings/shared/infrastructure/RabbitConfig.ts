@@ -1,6 +1,6 @@
 import { RmqOptions, Transport } from '@nestjs/microservices';
 
-export const RabbitConfig: RmqOptions = {
+export const getRabbitConfig = (): RmqOptions => ({
   transport: Transport.RMQ,
   options: {
     urls: [`amqp://localhost:${process.env.RABBIT_PORT}`],
@@ -9,4 +9,4 @@ export const RabbitConfig: RmqOptions = {
       durable: true,
     },
   },
-};
+});

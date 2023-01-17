@@ -667,39 +667,39 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@mikro-orm/core@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-5.6.2.tgz#ddbc932bf1723cc0582a0a61baaee06a9e32d449"
-  integrity sha512-FDKJBL1gjT9d36E9dyC5S9OxoeEQzy7lIj/SpijU8BDDC6gpn27HJ00DLqG+gLdepXBYdDdf3B/ELi+OGxZKCw==
+"@mikro-orm/core@^5.6.7":
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/core/-/core-5.6.7.tgz#e0b101790affd28be7dca95ed7d870a898358e67"
+  integrity sha512-XLCY3S10nz7uUFGTFypUuaO48cQAhCUiSsQBxpqqhlOqVz6yxGYdqAe7SmMKuplmpOoVL8OGDZrULzd0bIjtYA==
   dependencies:
     acorn-loose "8.3.0"
     acorn-walk "8.2.0"
     dotenv "16.0.3"
     fs-extra "11.1.0"
     globby "11.1.0"
-    mikro-orm "~5.6.2"
+    mikro-orm "~5.6.7"
     reflect-metadata "0.1.13"
 
-"@mikro-orm/knex@~5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-5.6.2.tgz#4fb67d98f45a65e639f1cd41848430e07852f52b"
-  integrity sha512-5exuHVL/go2PWIYEE1u8f4Ds8spBUij8sd2afoB1R7yj/maVPr1QnYCbbzdL0gsktLsSw9mAzpl5Co2VBesj3w==
+"@mikro-orm/knex@~5.6.7":
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-5.6.7.tgz#04cf32c9979e13246bc20e142589040927464586"
+  integrity sha512-UDwAt+lII9/G0NfaYjrwyChlhBbgNrq700VCy4aaSbJ1S2gysRfhzeiDVtlmd+zRIHDAz+U5NETspgnP128TKw==
   dependencies:
     fs-extra "11.1.0"
-    knex "2.3.0"
+    knex "2.4.0"
     sqlstring "2.3.3"
 
-"@mikro-orm/nestjs@^5.1.5":
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/nestjs/-/nestjs-5.1.5.tgz#c076495c3866456ac4645f3cca6199f0af9649d8"
-  integrity sha512-8Bkr2cWBRp3MBXKNA/mPSph1pVbL6+4ry0cJl2gxgj9n/kaSn9ak/OsULh5MfadDf8OWi0+TVEqmKjauMrJ02g==
+"@mikro-orm/nestjs@^5.1.6":
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/nestjs/-/nestjs-5.1.6.tgz#db8bf966c1c4d73e0cbe22e74b6d30d2444fa5bf"
+  integrity sha512-Bn0O2tekE3mmIvsM4eh6WXantZfJEpj/APEsfh98L7WPM2RqUXr0NeCA6QF15anl6J5VjT3e7jbTthddytR5Ag==
 
-"@mikro-orm/postgresql@^5.6.2":
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-5.6.2.tgz#c2c415ba09d341ea68504614a33d896b0dbce8b3"
-  integrity sha512-sqwIcrKmtG2LzB5nBgPN6sAOuDAO0puuRKGMhCNWv+Un741DSxQPPi+Bj5Qgucm3y3+ymEB9pkmXpSOReX9f3A==
+"@mikro-orm/postgresql@^5.6.7":
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-5.6.7.tgz#4c41b3d5e889e185d615a19d89bd0706f17eca76"
+  integrity sha512-zgF/vbhh1tHcIxiJ3LmpV3KG6SQ4+IBJRWg0MAt9PNR+JZA3ZLlU+TlbrNawPbOAl780VweoqenqJw0bqncFIw==
   dependencies:
-    "@mikro-orm/knex" "~5.6.2"
+    "@mikro-orm/knex" "~5.6.7"
     pg "8.8.0"
 
 "@nestjs/cli@^9.0.0":
@@ -738,6 +738,16 @@
     iterare "1.2.1"
     tslib "2.4.1"
     uuid "9.0.0"
+
+"@nestjs/config@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-2.2.0.tgz#9f3da35f7c4a58724c0a0817d6f04b66e6703430"
+  integrity sha512-78Eg6oMbCy3D/YvqeiGBTOWei1Jwi3f2pSIZcZ1QxY67kYsJzTRTkwRT8Iv30DbK0sGKc1mcloDLD5UXgZAZtg==
+  dependencies:
+    dotenv "16.0.1"
+    dotenv-expand "8.0.3"
+    lodash "4.17.21"
+    uuid "8.3.2"
 
 "@nestjs/core@^9.0.0":
   version "9.2.1"
@@ -2026,6 +2036,16 @@ doctrine@^3.0.0:
   integrity sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
   dependencies:
     esutils "^2.0.2"
+
+dotenv-expand@8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-8.0.3.tgz#29016757455bcc748469c83a19b36aaf2b83dd6e"
+  integrity sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==
+
+dotenv@16.0.1:
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.1.tgz#8f8f9d94876c35dac989876a5d3a82a267fdce1d"
+  integrity sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ==
 
 dotenv@16.0.3:
   version "16.0.3"
@@ -3386,10 +3406,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-knex@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-2.3.0.tgz#87fa2a9553d7cafb125d7a0645256fbe29ef5967"
-  integrity sha512-WMizPaq9wRMkfnwKXKXgBZeZFOSHGdtoSz5SaLAVNs3WRDfawt9O89T4XyH52PETxjV8/kRk0Yf+8WBEP/zbYw==
+knex@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-2.4.0.tgz#7d33cc36f320cdac98741010544b4c6a98b8b19e"
+  integrity sha512-i0GWwqYp1Hs2yvc2rlDO6nzzkLhwdyOZKRdsMTB8ZxOs2IXQyL5rBjSbS1krowCh6V65T4X9CJaKtuIfkaPGSA==
   dependencies:
     colorette "2.0.19"
     commander "^9.1.0"
@@ -3453,7 +3473,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.19, lodash@^4.17.21:
+lodash@4.17.21, lodash@^4.17.19, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -3551,10 +3571,10 @@ micromatch@^4.0.0, micromatch@^4.0.4:
     braces "^3.0.2"
     picomatch "^2.3.1"
 
-mikro-orm@~5.6.2:
-  version "5.6.2"
-  resolved "https://registry.yarnpkg.com/mikro-orm/-/mikro-orm-5.6.2.tgz#d1eb92fa7b842ecc20fd69502b4d299ae5054822"
-  integrity sha512-LzKIAtA/Zj8qO1yKNRJLYI+Vywm1nBQqb89vPM7abZBnqqarGB89CWTlAt6DfaG9bNk7v+FK0atO5dqMEfLT1Q==
+mikro-orm@~5.6.7:
+  version "5.6.7"
+  resolved "https://registry.yarnpkg.com/mikro-orm/-/mikro-orm-5.6.7.tgz#2bbdcfc27d64ac5e4be4d146d84c5450a64e8c77"
+  integrity sha512-mxkg+BDXmuQh4PYlWkv0Yysy33Yvg/31BZN4UWWZpV9gcLMYPQcaEF8qfSW7sMbrdNSJcvqf2MX6etmIARHJ9A==
 
 mime-db@1.52.0:
   version "1.52.0"
@@ -4819,6 +4839,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
+
+uuid@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 uuid@9.0.0:
   version "9.0.0"

@@ -1,17 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { RmqOptions } from '@nestjs/microservices';
-import { RabbitConfig } from './bookings/shared/infrastructure/RabbitConfig';
+import { getRabbitConfig } from './bookings/shared/infrastructure/RabbitConfig';
+import { MikroORM } from '@mikro-orm/core';
+import { INestApplication } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  console.log('process.env.RABBIT_PORT', process.env.RABBIT_PORT);
+  await setUpDatabase(app);
 
-  app.connectMicroservice<RmqOptions>(RabbitConfig);
+  app.connectMicroservice<RmqOptions>(getRabbitConfig());
 
   await app.startAllMicroservices();
 
   await app.listen(3000);
 }
+
 bootstrap();
+
+async function setUpDatabase(app: INestApplication) {
+  const orm = app.get(MikroORM);
+  const generator = orm.getSchemaGenerator();
+
+  await generator.ensureDatabase();
+  await generator.updateSchema();
+}
