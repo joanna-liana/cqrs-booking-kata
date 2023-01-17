@@ -22,5 +22,5 @@ jobs:
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
     - run: cd nest && yarn install
-    - run: cd nest && yarn start & sleep 5
+    - run: cd nest && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start & sleep 5
     - run: yarn test:e2e
