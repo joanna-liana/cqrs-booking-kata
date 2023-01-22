@@ -1,14 +1,12 @@
 import { BookingReadModel } from '../domain/BookingReadModel';
 import { BookingReadRegistry } from '../domain/BookingReadRegistry';
 import { BookingRead } from './BookingRead.entity';
-import { Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MikroORM } from '@mikro-orm/core';
 
+@Injectable()
 export class PostgresReadRegistry implements BookingReadRegistry {
-  constructor(
-    @Inject(MikroORM)
-    private readonly orm: MikroORM,
-  ) {}
+  constructor(private readonly orm: MikroORM) {}
 
   private get repo() {
     return this.orm.em.fork().getRepository(BookingRead);
