@@ -3,12 +3,13 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { BookingWriteModel } from '../domain/BookingWriteModel';
 import { BookingWriteRegistry } from '../domain/BookingWriteRegistry';
 import { BookingWrite } from './BookingWrite.entity';
-import { getRepositoryToken } from '@mikro-orm/nestjs';
-import { Inject } from '@nestjs/common';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class PostgresWriteRegistry implements BookingWriteRegistry {
   constructor(
-    @Inject(getRepositoryToken(BookingWrite))
+    @InjectRepository(BookingWrite)
     private readonly repo: EntityRepository<BookingWrite>,
   ) {}
 
