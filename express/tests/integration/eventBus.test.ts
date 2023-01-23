@@ -21,13 +21,12 @@ describe('Event bus', () => {
   let rabbit: RabbitInstance;
 
   const busFactories: [string, EventBusFactory][] = [
-    // TODO: enable after debug
-    // [
-    //   'In memory',
-    //   (): EventBus => new InMemoryEventBus(
-    //     new EventEmitter()
-    //   ),
-    // ],
+    [
+      'In memory',
+      (): EventBus => new InMemoryEventBus(
+        new EventEmitter()
+      ),
+    ],
     [
       'via RabbitMQ',
       (): EventBus => new RabbitEventBus(
