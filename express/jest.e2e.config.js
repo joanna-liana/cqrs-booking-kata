@@ -6,5 +6,7 @@ module.exports = {
   testEnvironment: 'node',
   rootDir: 'tests/e2e',
   collectCoverageFrom: ['**/*.ts', '!demo.ts'],
-  setupFilesAfterEnv: ['<rootDir>/hooks/afterEnv.ts']
+  globalSetup: '<rootDir>/hooks/globalSetup.ts',
+  globalTeardown: '<rootDir>/hooks/globalTeardown.ts',
+  testTimeout: 120_000
 };
