@@ -5,5 +5,5 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$',
   testEnvironment: 'node',
   rootDir: 'tests/e2e',
-  setupFilesAfterEnv: ['<rootDir>/hooks/afterEnv.ts']
+  globalSetup: '<rootDir>/hooks/globalSetup.ts'
 };
