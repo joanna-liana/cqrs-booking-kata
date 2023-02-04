@@ -1,3 +1,3 @@
 export const endEventLoop = (): Promise<void> => new Promise(
-  (resolve) => setTimeout(resolve, 1)
+  (resolve) => setTimeout(resolve, 2)
 );
