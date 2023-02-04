@@ -44,6 +44,10 @@ export const bootstrapApp = async (
 
   app.use(bookingsRouter);
 
+  app.get('/healthcheck', (_req: Request, res: Response) => {
+    res.sendStatus(204);
+  });
+
   app.use((req: Request, res: Response) => {
     res.status(404).send(`Not found ${req.path}`);
   });
