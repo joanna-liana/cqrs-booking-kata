@@ -15,45 +15,57 @@ import { endEventLoop } from '../helpers';
 
 type EventBusFactory = () => EventBus;
 
-describe('Event bus', () => {
-  const EVENT_NAME = 'TEST EVENT';
+let rabbit: RabbitInstance;
 
-  let rabbit: RabbitInstance;
+const busFactories: [string, EventBusFactory][] = [
+  [
+    'In memory',
+    (): EventBus => new InMemoryEventBus(
+      new EventEmitter()
+    ),
+  ],
+  [
+    'via RabbitMQ',
+    (): EventBus => new RabbitEventBus(
+      rabbit.channel,
+      rabbit.exchanges
+    )
+  ]
+];
 
-  const busFactories: [string, EventBusFactory][] = [
-    [
-      'In memory',
-      (): EventBus => new InMemoryEventBus(
-        new EventEmitter()
-      ),
-    ],
-    [
-      'via RabbitMQ',
-      (): EventBus => new RabbitEventBus(
-        rabbit.channel,
-        rabbit.exchanges
-      )
-    ]
-  ];
+busFactories.forEach(([_name, eventBusFactory]) => {
+  describe('Event bus: ' + _name, () => {
+    const EVENT_NAME = 'TEST EVENT';
 
-  beforeAll(async () => {
-    // TODO: use env var
-    rabbit = await setUpEventBus({
-      host: 'localhost',
-      port: 5673
+    beforeAll(async () => {
+      if (_name !== 'via RabbitMQ') {
+        return;
+      }
+
+      // TODO: use env var
+      rabbit = await setUpEventBus({
+        host: 'localhost',
+        port: 5673
+      });
     });
-  });
 
-  beforeEach(async () => {
-    await rabbit.channel.deleteQueue(EVENT_NAME);
-  });
+    beforeEach(async () => {
+      if (_name !== 'via RabbitMQ') {
+        return;
+      }
 
-  afterAll(async () => {
-    await rabbit.connection.close();
-  });
+      await rabbit.channel.deleteQueue(EVENT_NAME);
+    });
 
-  describe('processes messages using the provided handler', () => {
-    it.each(busFactories)('%s', async (_name, eventBusFactory) => {
+    afterAll(async () => {
+      if (_name !== 'via RabbitMQ') {
+        return;
+      }
+
+      await rabbit.connection.close();
+    });
+
+    it('processes messages using the provided handler', async () => {
       // given
       const message = 'test';
       const eventHandler = jest.fn();
@@ -68,10 +80,8 @@ describe('Event bus', () => {
       // then
       expect(eventHandler).toHaveBeenCalledWith(message);
     });
-  });
 
-  describe('processes messages only for the registered events', () => {
-    it.each(busFactories)('%s', async (_name, eventBusFactory) => {
+    it('processes messages only for the registered events', async () => {
       // given
       const ANOTHER_EVENT_NAME = EVENT_NAME + '_antoher';
       const message = 'test';
@@ -87,10 +97,8 @@ describe('Event bus', () => {
       // then
       expect(eventHandler).not.toHaveBeenCalled();
     });
-  });
 
-  describe('processes messages with multiple handlers', () => {
-    it.each(busFactories)('%s', async (_name, eventBusFactory) => {
+    it('processes messages with multiple handlers', async () => {
       // given
       const message = 'test';
       const eventHandlerOne = jest.fn();
