@@ -10,8 +10,8 @@
     "test:it": "jest --config jest.it.config.js",
     "test:e2e": "RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres jest --detectOpenHandles --runInBand --forceExit --config jest.e2e.config.js",
     "lint": "eslint --fix .",
-    "docker:test": "docker-compose -f ../docker-compose.test.yml up -d",
-    "docker:test:stop": "docker-compose -f ../docker-compose.test.yml down"
+    "docker:test": "docker compose -f ../docker-compose.test.yml up -d --wait",
+    "docker:test:stop": "docker compose -f ../docker-compose.test.yml down"
   },
   "keywords": [],
   "author": "Joanna Liana",
