@@ -1,3 +1,4 @@
+import { DaprServer } from '@dapr/dapr';
 import { MikroORM } from '@mikro-orm/postgresql';
 import express,
 { Application, json, NextFunction, Request, Response }
@@ -12,7 +13,7 @@ import { DbConfig, setUpOrm } from './bookings/shared/infrastructure/db';
 import {
   EventBusConfig,
   RabbitInstance,
-  setUpEventBus
+  // setUpEventBus
 } from './bookings/shared/infrastructure/rabbitMq';
 
 interface App {
@@ -24,11 +25,11 @@ interface App {
 interface AppBootstrapConfig {
   db?: DbConfig;
   eventBus?: EventBusConfig;
+  daprServer: DaprServer;
 }
 
 export const bootstrapApp = async (
-  { db: dbConfig, eventBus: eventBusConfig }: AppBootstrapConfig = {
-  }
+  { db: dbConfig, eventBus: eventBusConfig, daprServer }: AppBootstrapConfig
 ): Promise<App> => {
   const app = express();
 
@@ -36,11 +37,14 @@ export const bootstrapApp = async (
   app.use(json());
   app.use(morgan('combined'));
 
-  const rabbit = await setUpEventBus(eventBusConfig);
+
+  // const rabbit = await setUpEventBus(eventBusConfig);
+  const rabbit = null;
+
 
   const orm = await setUpOrm(dbConfig);
 
-  const { bookingsRouter } = createBookingModule(orm, rabbit);
+  const { bookingsRouter } = createBookingModule(orm, rabbit, daprServer);
 
   app.use(bookingsRouter);
 
