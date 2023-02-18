@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pre:test:e2e": "yarn dapr:express:start",
     "test:e2e": "jest --config jest.e2e.config.js",
     "test:e2e:nest": "cd nest && yarn start & sleep 3 && yarn test:e2e; kill $(lsof -ti :3000); exit 0",
     "docker:test": "docker compose -f docker-compose.test.yml up -d --wait",
-    "docker:test:stop": "docker compose -f docker-compose.test.yml down"
+    "docker:test:stop": "docker compose -f docker-compose.test.yml down",
+    "dapr:express:start": "dapr run --app-id cqrs-express --dapr-http-port 50000 --app-port 3001 --resources-path ./express/src/bookings/shared/infrastructure/dapr"
   },
   "keywords": [],
   "author": "Joanna Liana",
@@ -16,6 +18,7 @@
     "node": ">=18.3.0"
   },
   "devDependencies": {
+    "@dapr/dapr": "^2.5.0",
     "@types/express": "^4.17.15",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.3",
