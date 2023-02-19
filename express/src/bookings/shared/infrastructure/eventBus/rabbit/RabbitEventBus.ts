@@ -1,4 +1,4 @@
-import { EventBus, EventHandler } from './EventBus';
+import { EventBus, EventHandler, EventPayload } from '../eventBus';
 import { RabbitInstance } from './rabbitMq';
 
 type EventName = string;
@@ -50,7 +50,8 @@ export class RabbitEventBus<TPayload> implements EventBus<TPayload> {
         return;
       }
 
-      const parsedContent: TPayload = JSON.parse(msg.content.toString());
+      const parsedContent: EventPayload<TPayload> = JSON
+        .parse(msg.content.toString());
 
       console.log(`[${event}] Message:`, parsedContent);
 

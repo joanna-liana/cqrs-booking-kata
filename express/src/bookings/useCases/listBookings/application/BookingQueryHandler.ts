@@ -1,9 +1,9 @@
 import { Events } from '../../../shared/domain/Events';
 import { FindFreeRoom } from '../../../shared/domain/freeRoomFinder';
-import { EventBus } from '../../../shared/infrastructure/EventBus';
+import { EventBus } from '../../../shared/infrastructure/eventBus/eventBus';
 import {
   InMemoryEventBus
-} from '../../../shared/infrastructure/InMemoryEventBus';
+} from '../../../shared/infrastructure/eventBus/inMemory/InMemoryEventBus';
 import { BookingReadModel } from '../domain/BookingReadModel';
 import { BookingReadRegistry } from '../domain/BookingReadRegistry';
 import { Room } from './dtos/Room';

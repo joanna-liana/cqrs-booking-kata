@@ -4,8 +4,8 @@ import { findFreeRoom } from '../../../src/bookings/shared/domain/freeRoomFinder
 import {
   ROOM_ONE_NAME,
 } from '../../../src/bookings/shared/domain/rooms';
-import { EventBus } from '../../../src/bookings/shared/infrastructure/EventBus';
-import { InMemoryEventBus } from '../../../src/bookings/shared/infrastructure/InMemoryEventBus';
+import { EventBus } from '../../../src/bookings/shared/infrastructure/eventBus/eventBus';
+import { InMemoryEventBus } from '../../../src/bookings/shared/infrastructure/eventBus/inMemory/InMemoryEventBus';
 import { BookingCommandHandler } from '../../../src/bookings/useCases/bookARoom/application/BookingCommandHandler';
 import { BookingWriteModel } from '../../../src/bookings/useCases/bookARoom/domain/BookingWriteModel';
 import {
