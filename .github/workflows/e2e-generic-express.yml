@@ -19,6 +19,9 @@ jobs:
       with:
         node-version: ">=18.3.0"
 
+    - name: Dapr tool installer
+      uses: dapr/setup-dapr@v1
+
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
     - run: cd express && yarn install
