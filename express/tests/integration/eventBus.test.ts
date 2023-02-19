@@ -36,6 +36,7 @@ const busFactories: [string, EventBusFactory][] = [
       rabbit.exchanges
     )
   ]
+  // TODO: test dapr version
 ];
 
 busFactories.forEach(([_name, eventBusFactory]) => {

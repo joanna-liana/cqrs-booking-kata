@@ -11,6 +11,7 @@ export interface DaprEventBusProps {
 type EventName = string;
 
 // TODO: inject logger
+// TODO: remove duplication with RabbitEventBus
 export class DaprEventBus<TPayload> implements EventBus<
   EventPayload<TPayload>
 > {

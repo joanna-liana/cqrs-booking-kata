@@ -8,6 +8,7 @@ export enum EventBusType {
   DAPR = 'Dapr'
 }
 
+// TODO: specify port
 export type EventBusConfig = {
   type: EventBusType.RABBIT;
   props: RabbitInstance;
