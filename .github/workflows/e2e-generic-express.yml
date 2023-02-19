@@ -24,6 +24,7 @@ jobs:
       with:
         version: '1.10.0'
 
+    - run: dapr init
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
     - run: cd express && yarn install
