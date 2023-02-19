@@ -1,14 +1,19 @@
-import { DaprClient } from '@dapr/dapr';
+import { DaprClient, DaprServer } from '@dapr/dapr';
 import IServerPubSub from '@dapr/dapr/interfaces/Server/IServerPubSub';
 
-import { EventBus, EventHandler } from './EventBus';
+import { EventBus, EventHandler, EventPayload } from '../eventBus';
+
+export interface DaprEventBusProps {
+  server: DaprServer;
+  pubSubName: string;
+}
 
 type EventName = string;
 
 // TODO: inject logger
-export class DaprEventBus<
-  TPayload extends object
-> implements EventBus<TPayload> {
+export class DaprEventBus<TPayload> implements EventBus<
+  EventPayload<TPayload>
+> {
   private readonly client: DaprClient;
   private handlersByEvent = new Map<EventName, EventHandler<TPayload>[]>;
 
@@ -20,7 +25,7 @@ export class DaprEventBus<
     this.client = new DaprClient('localhost', '50000');
   }
 
-  emit(eventName: EventName, payload: TPayload): Promise<void> {
+  emit(eventName: EventName, payload: EventPayload<TPayload>): Promise<void> {
     this.client.pubsub.publish(
       this.pubSubName,
       eventName,
@@ -30,7 +35,10 @@ export class DaprEventBus<
     return Promise.resolve();
   }
 
-  async on(event: EventName, handler: EventHandler<TPayload>): Promise<void> {
+  async on(
+    event: EventName,
+    handler: EventHandler<TPayload>
+  ): Promise<void> {
     this.registerEventHandler(event, handler);
 
     // TODO: this likely shouldn't be done on every handler registration, only
@@ -45,7 +53,7 @@ export class DaprEventBus<
     await this.pubSubServer.subscribe(
       this.pubSubName,
       event,
-      async (data: TPayload) => {
+      async (data: EventPayload<TPayload>) => {
         console.log(`[${event}] Message received:`, data);
 
         await Promise.all(

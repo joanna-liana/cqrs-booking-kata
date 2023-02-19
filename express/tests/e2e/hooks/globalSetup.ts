@@ -5,6 +5,9 @@ import { Application } from 'express';
 import { AddressInfo } from 'net';
 
 import { bootstrapApp } from '../../../src/app';
+import {
+  EventBusType
+} from '../../../src/bookings/shared/infrastructure/eventBus/eventBusFactory';
 
 export default async (): Promise<void> => {
   const daprServer = new DaprServer('127.0.0.1', '50000', '127.0.0.1', '3001');
@@ -13,10 +16,13 @@ export default async (): Promise<void> => {
     db: {
       name: `test_${Date.now()}`
     },
-    eventBus: {
-      port: 5673
-    },
-    daprServer
+    eventBusConfig: {
+      type: EventBusType.DAPR,
+      props: {
+        pubSubName: 'event-bus',
+        server: daprServer
+      }
+    }
   });
 
   global.rabbit = rabbit;

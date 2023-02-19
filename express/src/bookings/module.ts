@@ -1,12 +1,12 @@
-import { DaprServer } from '@dapr/dapr';
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Router } from 'express';
 
 import { getBookingsRouter } from './shared/application/rest/restApi';
 import { findFreeRoom } from './shared/domain/freeRoomFinder';
-import { DaprEventBus } from './shared/infrastructure/DaprEventBus';
-// import { RabbitEventBus } from './shared/infrastructure/RabbitEventBus';
-import { RabbitInstance } from './shared/infrastructure/rabbitMq';
+import {
+  createEventBus,
+  EventBusConfig
+} from './shared/infrastructure/eventBus/eventBusFactory';
 import {
   BookingCommandHandler
 } from './useCases/bookARoom/application/BookingCommandHandler';
@@ -36,21 +36,13 @@ interface BookingModule {
 
 export function createBookingModule(
   orm: MikroORM,
-  rabbit: RabbitInstance,
-  daprServer: DaprServer,
+  eventBusConfig: EventBusConfig,
 ): BookingModule {
   const writeRegistry = new PostgresWriteRegistry(
     orm.em.fork().getRepository(BookingWrite)
   );
 
-  const eventBus = new DaprEventBus<BookingWriteModel>(
-    'event-bus',
-    daprServer.pubsub
-  );
-  // const eventBus = new RabbitEventBus<BookingWriteModel>(
-  //   rabbit.channel,
-  //   rabbit.exchanges
-  // );
+  const eventBus = createEventBus<BookingWriteModel>(eventBusConfig);
 
   const commandHandler = new BookingCommandHandler(
     writeRegistry,

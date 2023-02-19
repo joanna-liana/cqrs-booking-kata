@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "yarn dapr:start & ts-node src/server.ts",
-    "dapr:start": "dapr run --app-id cqrs-express --dapr-http-port 50000 --app-port 3001 --resources-path ./src/bookings/shared/infrastructure/dapr",
+    "dapr:start": "dapr run --app-id cqrs-express --dapr-http-port 50000 --app-port 3001 --resources-path ./src/bookings/shared/infrastructure/eventBus/dapr",
     "test:all": "yarn test:unit && yarn test:it && yarn test:e2e",
     "test:unit": "jest --config jest.unit.config.js",
     "test:it": "jest --config jest.it.config.js",

@@ -3,7 +3,7 @@ import {
 } from '../../../shared/application/errors/RoomUnavailableError';
 import { Events } from '../../../shared/domain/Events';
 import { FindFreeRoom } from '../../../shared/domain/freeRoomFinder';
-import { EventBus } from '../../../shared/infrastructure/EventBus';
+import { EventBus } from '../../../shared/infrastructure/eventBus/eventBus';
 import { BookingWriteModel } from '../domain/BookingWriteModel';
 import {
   BookingWriteRegistry
