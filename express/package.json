@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pre:start": "yarn dapr:start",
     "start": "ts-node src/server.ts",
     "dapr:start": "dapr run --app-id cqrs-express --dapr-http-port 50000 --app-port 3001 --resources-path ./src/bookings/shared/infrastructure/dapr",
     "test:all": "yarn test:unit && yarn test:it && yarn test:e2e",
