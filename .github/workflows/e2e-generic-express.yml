@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  e2e_tests:
+  e2e_tests_express:
     runs-on: ubuntu-latest
 
     steps:
