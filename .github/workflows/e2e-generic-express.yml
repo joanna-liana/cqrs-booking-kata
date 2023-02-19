@@ -21,6 +21,8 @@ jobs:
 
     - name: Dapr tool installer
       uses: dapr/setup-dapr@v1
+      with:
+        version: '1.10.0'
 
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
