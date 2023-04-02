@@ -25,12 +25,18 @@ export class BookingCommandHandler {
     private readonly findFreeRoom: FindFreeRoom,
     @Inject(WRITE_REGISTRY)
     private readonly writeRegistry: BookingWriteRegistry,
-  ) {}
+  ) {
+    console.log('constructor', this.writeRegistry);
+  }
 
   async execute(command: BookRoomCommand) {
+    console.log('BookingCommandHandler', this.writeRegistry);
+    console.log('BookingCommandHandler', 'fetch bookings');
     const roomBookings = await this.writeRegistry.getRoomBookings(
       command.roomName,
     );
+
+    console.log('BookingCommandHandler', 'bookings fetched');
 
     const freeRooms = await this.findFreeRoom(roomBookings, {
       arrival: command.arrivalDate,
@@ -44,7 +50,12 @@ export class BookingCommandHandler {
       throw new RoomUnavailableError();
     }
 
+    console.log('BookingCommandHandler', 'make a new booking');
+
     await this.writeRegistry.makeABooking(command);
+
+    console.log('BookingCommandHandler', 'a new booking has been made');
+
     this.eventBus.emit(Events.RoomBooked, command);
   }
 }
