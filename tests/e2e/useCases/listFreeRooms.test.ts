@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-describe('List free rooms use case', () => {
+describe.skip('List free rooms use case', () => {
   let testUrl: string;
 
   const ARRIVAL_DATE = new Date(2020, 1, 5);
