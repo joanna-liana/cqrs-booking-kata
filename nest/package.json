@@ -22,9 +22,9 @@
     "docker:test": "docker-compose -f ../docker-compose.test.yml up -d"
   },
   "dependencies": {
-    "@mikro-orm/core": "^5.6.7",
-    "@mikro-orm/nestjs": "^5.1.6",
-    "@mikro-orm/postgresql": "^5.6.7",
+    "@mikro-orm/core": "^5.6.15",
+    "@mikro-orm/nestjs": "^5.1.7",
+    "@mikro-orm/postgresql": "^5.6.15",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
