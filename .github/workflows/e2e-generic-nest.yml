@@ -18,9 +18,18 @@ jobs:
       uses: actions/setup-node@v3.5.1
       with:
         node-version: ">=18.3.0"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: logs
+        path: nest/logs.txt
 
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
     - run: cd nest && yarn install
-    - run: cd nest && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start & sleep 5
+    - run: cd nest && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn
+    start > logs.txt 2>&1 & sleep 5
     - run: yarn test:e2e
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: logs
