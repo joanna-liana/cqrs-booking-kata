@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "jest --config jest.e2e.config.js",
+    "test:e2e": "jest --config jest.e2e.config.js --verbose",
     "test:e2e:nest": "cd nest && yarn start & sleep 3 && yarn test:e2e; kill $(lsof -ti :3000); exit 0",
     "docker:test": "docker compose -f docker-compose.test.yml up -d --wait",
     "docker:test:stop": "docker compose -f docker-compose.test.yml down"

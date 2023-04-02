@@ -11,6 +11,7 @@ describe('Book a room use case', () => {
   const DEPARTURE_DATE = new Date(2020, 1, 9);
 
   beforeAll(() => {
+    console.log("[BOOK A ROOM SPEC] global.baseTestUrl", global.baseTestUrl)
     testUrl = `${global.baseTestUrl}/bookings`;
   });
 
