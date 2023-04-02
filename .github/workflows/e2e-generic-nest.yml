@@ -22,6 +22,7 @@ jobs:
     - run: npm i -g yarn
     - run: yarn install && yarn docker:test
     - run: cd nest && yarn install
+    - run: cd nest && mv EntityManager.js /node_modules/@mikro-orm/core/EntityManager.js
     - run: cd nest && RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres yarn start > logs.txt 2>&1 & sleep 5
     - run: yarn test:e2e
 
