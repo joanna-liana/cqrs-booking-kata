@@ -27,13 +27,12 @@ export class BookingCommandHandler {
     private readonly writeRegistry: BookingWriteRegistry,
   ) {
     console.log('constructor', this.writeRegistry);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    console.log('constructor', this.writeRegistry.repo._em.global);
   }
 
   async execute(command: BookRoomCommand) {
-    console.log('BookingCommandHandler', this.writeRegistry);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    console.log('BookingCommandHandler em', this.writeRegistry.repo._em.global);
     console.log('BookingCommandHandler', 'fetch bookings');
     const roomBookings = await this.writeRegistry.getRoomBookings(
       command.roomName,
