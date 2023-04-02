@@ -13,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
       type: 'postgresql',
       password: process.env.PG_PASSWORD,
       port: Number(process.env.PG_PORT),
+      debug: true,
     }),
     BookingsModule,
   ],
