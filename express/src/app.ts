@@ -10,25 +10,25 @@ import {
 } from './bookings/shared/application/errors/ApplicationError';
 import { DbConfig, setUpOrm } from './bookings/shared/infrastructure/db';
 import {
-  EventBusConfig,
-  RabbitInstance,
-  setUpEventBus
-} from './bookings/shared/infrastructure/rabbitMq';
+  EventBusConfig
+} from './bookings/shared/infrastructure/eventBus/eventBusFactory';
+import {
+  RabbitInstance
+} from './bookings/shared/infrastructure/eventBus/rabbit/rabbitMq';
 
 interface App {
   app: Application;
   orm: MikroORM;
-  rabbit: RabbitInstance;
+  rabbit?: RabbitInstance;
 }
 
 interface AppBootstrapConfig {
   db?: DbConfig;
-  eventBus?: EventBusConfig;
+  eventBusConfig: EventBusConfig;
 }
 
 export const bootstrapApp = async (
-  { db: dbConfig, eventBus: eventBusConfig }: AppBootstrapConfig = {
-  }
+  { db: dbConfig, eventBusConfig }: AppBootstrapConfig
 ): Promise<App> => {
   const app = express();
 
@@ -36,11 +36,9 @@ export const bootstrapApp = async (
   app.use(json());
   app.use(morgan('combined'));
 
-  const rabbit = await setUpEventBus(eventBusConfig);
-
   const orm = await setUpOrm(dbConfig);
 
-  const { bookingsRouter } = createBookingModule(orm, rabbit);
+  const { bookingsRouter } = createBookingModule(orm, eventBusConfig);
 
   app.use(bookingsRouter);
 
@@ -67,7 +65,6 @@ export const bootstrapApp = async (
 
   return {
     app,
-    orm,
-    rabbit
+    orm
   };
 };

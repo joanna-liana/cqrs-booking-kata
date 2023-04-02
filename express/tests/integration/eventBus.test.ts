@@ -1,36 +1,42 @@
 import EventEmitter from 'events';
 
-import { EventBus } from '../../src/bookings/shared/infrastructure/EventBus';
+/* eslint-disable max-len */
+import {
+  EventBus
+} from '../../src/bookings/shared/infrastructure/eventBus/eventBus';
 import {
   InMemoryEventBus
-} from '../../src/bookings/shared/infrastructure/InMemoryEventBus';
+} from '../../src/bookings/shared/infrastructure/eventBus/inMemory/InMemoryEventBus';
 import {
   RabbitEventBus
-} from '../../src/bookings/shared/infrastructure/RabbitEventBus';
+} from '../../src/bookings/shared/infrastructure/eventBus/rabbit/RabbitEventBus';
 import {
   RabbitInstance,
   setUpEventBus
-} from '../../src/bookings/shared/infrastructure/rabbitMq';
+} from '../../src/bookings/shared/infrastructure/eventBus/rabbit/rabbitMq';
+/* eslint-enable max-len */
 import { endEventLoop } from '../helpers';
 
-type EventBusFactory = () => EventBus;
+
+type EventBusFactory = () => EventBus<unknown>;
 
 let rabbit: RabbitInstance;
 
 const busFactories: [string, EventBusFactory][] = [
   [
     'In memory',
-    (): EventBus => new InMemoryEventBus(
+    (): EventBus<unknown> => new InMemoryEventBus(
       new EventEmitter()
     ),
   ],
   [
     'via RabbitMQ',
-    (): EventBus => new RabbitEventBus(
+    (): EventBus<unknown> => new RabbitEventBus(
       rabbit.channel,
       rabbit.exchanges
     )
   ]
+  // TODO: test dapr version
 ];
 
 busFactories.forEach(([_name, eventBusFactory]) => {

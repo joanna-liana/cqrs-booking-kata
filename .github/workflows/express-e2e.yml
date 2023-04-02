@@ -1,4 +1,4 @@
-name: E2E tests (Express)
+name: "[Express] E2E tests"
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  e2e_tests:
+  express_e2e_tests:
     runs-on: ubuntu-latest
 
     defaults:

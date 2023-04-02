@@ -1,17 +1,27 @@
+import { DaprServer } from '@dapr/dapr';
 import retry from 'async-retry';
 import axios from 'axios';
 import { Application } from 'express';
 import { AddressInfo } from 'net';
 
 import { bootstrapApp } from '../../../src/app';
+import {
+  EventBusType
+} from '../../../src/bookings/shared/infrastructure/eventBus/eventBusFactory';
 
 export default async (): Promise<void> => {
+  const daprServer = new DaprServer('127.0.0.1', '50000', '127.0.0.1', '3001');
+
   const { app, orm, rabbit } = await bootstrapApp({
     db: {
       name: `test_${Date.now()}`
     },
-    eventBus: {
-      port: 5673
+    eventBusConfig: {
+      type: EventBusType.DAPR,
+      props: {
+        pubSubName: 'event-bus',
+        server: daprServer
+      }
     }
   });
 

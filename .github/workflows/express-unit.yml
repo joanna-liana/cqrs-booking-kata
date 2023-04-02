@@ -1,4 +1,4 @@
-name: Unit tests (Express)
+name: "[Express] Unit tests"
 
 on:
   push:
@@ -8,21 +8,21 @@ on:
 
 jobs:
 
-  unit_test:
+  express_unit_test:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./express
-    
+
     steps:
     - uses: actions/checkout@v3.2.0
-    
+
     - name: Set up Node
       uses: actions/setup-node@v3.5.1
       with:
         node-version: ">=18.3.0"
-    
+
     - run: npm i -g yarn
     - run: yarn install
     - run: yarn test:unit

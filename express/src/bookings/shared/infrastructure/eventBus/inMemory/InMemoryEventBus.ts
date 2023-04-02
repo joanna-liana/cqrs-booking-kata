@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 
-import { EventBus, EventHandler } from './EventBus';
+import { EventBus, EventHandler } from '../eventBus';
 
 
 export class InMemoryEventBus<TPayload> implements EventBus<TPayload> {

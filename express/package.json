@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "yarn dapr:start & ts-node src/server.ts",
+    "dapr:start": "dapr run --app-id cqrs-express --dapr-http-port 50000 --app-port 3001 --resources-path ./src/bookings/shared/infrastructure/eventBus/dapr",
     "test:all": "yarn test:unit && yarn test:it && yarn test:e2e",
     "test:unit": "jest --config jest.unit.config.js",
     "test:it": "jest --config jest.it.config.js",
-    "test:e2e": "RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres jest --detectOpenHandles --runInBand --forceExit --config jest.e2e.config.js",
+    "test:e2e": "yarn dapr:start & RABBIT_PORT=5673 PG_PORT=5435 PG_PASSWORD=postgres jest --detectOpenHandles --runInBand --forceExit --config jest.e2e.config.js",
     "lint": "eslint --fix .",
     "docker:test": "docker compose -f ../docker-compose.test.yml up -d --wait",
     "docker:test:stop": "docker compose -f ../docker-compose.test.yml down"
@@ -39,6 +40,7 @@
     "yarn-upgrade-all": "^0.7.1"
   },
   "dependencies": {
+    "@dapr/dapr": "^2.5.0",
     "@mikro-orm/core": "^5.6.11",
     "@mikro-orm/postgresql": "^5.6.11",
     "amqplib": "^0.10.3",

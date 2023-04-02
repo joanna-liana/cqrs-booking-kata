@@ -1,4 +1,4 @@
-name: E2E tests - Nest
+name: E2E tests (generic) - Nest
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  e2e_tests:
+  e2e_tests_nest:
     runs-on: ubuntu-latest
 
     steps:
